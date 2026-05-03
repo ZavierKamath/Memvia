@@ -1,6 +1,6 @@
-import { useChat } from "../hooks/useChat.tsx";
+import type { ChatMessageType } from "../context/ChatContext.tsx"
 
-export function createEventListenersForJob(jobId: string, setSessionId, addMessage) {
+export function createEventListenersForJob(jobId: string, setSessionId: (sessionId: string) => void, addMessage: (message: ChatMessageType) => void) {
 	setSessionId(jobId);
 
 	const es = new EventSource(`http://localhost:8000/jobs/${jobId}/stream`)
@@ -57,7 +57,7 @@ export function createEventListenersForJob(jobId: string, setSessionId, addMessa
 	return () => es.close()
 }
 
-export async function createJob(setSessionId) {
+export async function createJob(setSessionId: (sessionId: string) => void, query: string ) {
 	console.log('creating job')
 	const res = await fetch("http://localhost:8000/jobs", {
 		method: "POST",
@@ -65,7 +65,7 @@ export async function createJob(setSessionId) {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({
-			question: "Hello",
+			question: query,
 		})
 	})
 	console.log('frontend started job')
