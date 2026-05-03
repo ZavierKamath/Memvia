@@ -1,5 +1,5 @@
 from pydantic_ai.common_tools.duckduckgo import duckduckgo_search_tool
-from src.pipedagent import PipedAgent
+from src.agents.pipedagent import PipedAgent
 from src.prompts import RESUMEBOT_SYSTEM_PROMPT
 
 class ResumeBot(PipedAgent):
