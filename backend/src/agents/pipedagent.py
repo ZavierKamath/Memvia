@@ -59,7 +59,7 @@ class PipedAgent():
                 # max_tokens=5000,
                 extra_body={
                     "metadata": {
-                        "app": "IdeaGen",
+                        "app": "Memvia",
                         "agent_name": self.name,
                         "session_id": self.session,
                         "provider": "openrouter",
@@ -81,7 +81,7 @@ class PipedAgent():
     def _save_history(self, messages):
         path = self.SESSIONS_DIR / f"{self.session}" / f"{self.name}.json"
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(ModelMessagesTypeAdapter.dump_json(messages).decode())
+        path.write_text(ModelMessagesTypeAdapter.dump_json(messages, indent=2).decode())
 
     def create_agent(self) -> Agent:
         kwargs = {

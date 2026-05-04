@@ -8,8 +8,8 @@ from pydantic_ai import Tool
 
 class MemBot(PipedAgent):
     def __init__(self, job_id):
-        def spawn_resumebot_nowrap(instructions: str):
-            spawn_resumebot_serviceless(job_service=JobService(job_id), instructions=instructions)
+        async def spawn_resumebot_nowrap(instructions: str):
+            await spawn_resumebot_serviceless(job_service=JobService(job_id), instructions=instructions)
 
         spawn_resumebot = Tool(
             spawn_resumebot_nowrap,
