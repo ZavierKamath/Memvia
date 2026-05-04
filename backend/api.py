@@ -30,25 +30,31 @@ async def get_queue(job_id: str) -> asyncio.Queue:
         job_queues[job_id] = asyncio.Queue()
     return job_queues[job_id]
 
-async def publish(job_id: str, event_type: str, data: dict):
+async def publish(job_id: str, event_type: str, data: dict | str):
     queue = await get_queue(job_id)
     await queue.put({
         "type": event_type,
         "data": data
     })
 
-async def run_job(job_id: str, question: str):
+async def run_job(job_id: str, question: str, message_number):
     await publish(job_id, "status", {"message": "Job Started"})
 
     async def publish_agent_event(event: dict):
         await publish(job_id, "agent", event)
 
-    # membot = MemBot(job_id) 
-    # result = await membot.ask(question, publish=publish_agent_event)
-    for i in range(5):
-        await publish(job_id, "progress", {"message": f"test{i}"})
+    membot = MemBot(job_id) 
+    result = await membot.ask(question, publish=publish_agent_event)
 
-    await publish(job_id, "done", {"message": "Job Finished", "output": "test output"})
+    await publish(
+        job_id, "done", result.output
+        # {
+        #     "message": "Job Finished",
+        #     "messageNumber": message_number,
+        #     "output": result.output,
+        #     "timestamp": datetime.now(timezone.utc).isoformat()
+        # }
+    )
 
 async def sse_event_generator(job_id: str):
     queue = await get_queue(job_id)
@@ -76,11 +82,19 @@ async def stream_job(job_id: str):
         },
     )
 
-@app.post("/jobs")
+@app.post("/jobs/invoke")
 async def start_job(payload: StartJobRequest):
     print(f"Starting job")
-    job_id = str(uuid4())
-    print(f"Created job with id: {job_id}")
-    await get_queue(job_id)
-    asyncio.create_task(run_job(job_id, payload.question))
-    return {"job_id": job_id}
+
+    if payload.sessionId == "START":
+        job_id = str(uuid4())
+        print(f"Created job with id: {job_id}")
+        await get_queue(job_id)
+    else:
+        print(f"Using existing job id: {payload.sessionId}")
+        job_id = payload.sessionId
+
+    message_number = payload.messageNumber + 1
+
+    asyncio.create_task(run_job(job_id, payload.question, message_number))
+    return {"job_id": job_id, "message_number": message_number}

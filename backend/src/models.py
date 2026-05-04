@@ -8,6 +8,8 @@ from pydantic import BaseModel, Field
 
 class StartJobRequest(BaseModel):
     question: str
+    sessionId: str
+    messageNumber: int
 
 class MemoryKind(str, Enum):
     experience = "experience"
