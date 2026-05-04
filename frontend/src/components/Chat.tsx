@@ -12,12 +12,17 @@ function ChatMessage({ message }: { message: ChatMessageType }) {
 	}
 	console.log(`rendering message with sender: ${sender}, content: ${message_content.slice(0, 25)}..., number: ${message.number}, time: ${sentTimestamp}`)
 
+	const className = [
+		"div",
+		sender === "USER" ? "user-message" : "ai-message",
+	].filter(Boolean).join(" ")
+
 	return (
-		<>
+		<div className={className}>
 			<div>{sender}</div>
 			<div>{message_content.replace(/^['"]|['"]$/g, "")}</div>
 			<div>{sentTimestamp}</div>
-		</>
+		</div>
 	)
 }
 
@@ -55,7 +60,11 @@ export default function Chat() {
 			sender: "USER",
 			message: query,
 			number: nextMessageNumber,
-			sentTimestamp: new Intl.DateTimeFormat("en-US", {timeZone: "America/New_York"}).format(now)
+			sentTimestamp: new Intl.DateTimeFormat("en-US", {
+				timeZone: "America/New_York",
+				hour: "numeric",
+				minute: "2-digit"
+			}).format(now)
 		}
 		chatContext.addMessage(userMessage)
 		chatContext.setMessageNumber(nextMessageNumber)
