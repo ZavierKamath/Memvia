@@ -1,14 +1,22 @@
 import { useState, useEffect } from 'react';
-import { createJob, createEventListenersForJob } from '../api/jobs.ts';
+import { invokeJob, createEventListenersForJob } from '../api/jobs.ts';
 import { useChat } from '../hooks/useChat.tsx';
 import type { ChatMessageType } from '../context/ChatContext.tsx'
 
 function ChatMessage({ message }: { message: ChatMessageType }) {
+	const { sender, message_content, number, sentTimestamp } = {
+		sender: message.sender,
+		message_content: message.message,
+		number: message.number,
+		sentTimestamp: message.sentTimestamp
+	}
+	console.log(`rendering message with sender: ${sender}, content: ${message_content.slice(0, 25)}..., number: ${message.number}, time: ${sentTimestamp}`)
+
 	return (
 		<>
-			<div>{message.sender}</div>
-			<div>{message.message}</div>
-			<div>{message.sentTimestamp}</div>
+			<div>{sender}</div>
+			<div>{message_content.replace(/^['"]|['"]$/g, "")}</div>
+			<div>{sentTimestamp}</div>
 		</>
 	)
 }
@@ -16,11 +24,12 @@ function ChatMessage({ message }: { message: ChatMessageType }) {
 function Screen() {
 	const chatContext = useChat();
 	const chat = chatContext.chat;
+
 	return (
 		<>
 			{chat.map((message: ChatMessageType) => (
 				<ChatMessage
-					key={message.message}
+					key={message.number}
 					message={message}
 				/>
 			))}
@@ -31,17 +40,29 @@ function Screen() {
 export default function Chat() {
 	const chatContext = useChat();
 	const [inputText, setInputText] = useState("");
-	const [sessionId, setSessionId] = useState<string | null>(null)
 
 	useEffect(() => {
-		if (!sessionId) return
-		return createEventListenersForJob(sessionId, chatContext.setSessionId, chatContext.addMessage)
-	}, [sessionId]);
+		if (!chatContext.sessionId) return
+		return createEventListenersForJob(chatContext.sessionId, chatContext.messageNumber, chatContext.setSessionId, chatContext.addMessage)
+	}, [chatContext.sessionId, chatContext.messageNumber]);
 
 	async function handleSend() {
 		const query: string = inputText;
-		const jobId: string = await createJob(chatContext.setSessionId, query)
-		setSessionId(jobId)
+		const nextMessageNumber: number = (chatContext.messageNumber == 0) ? chatContext.messageNumber : chatContext.messageNumber + 1
+
+		const now = new Date()
+		const userMessage: ChatMessageType = {
+			sender: "USER",
+			message: query,
+			number: nextMessageNumber,
+			sentTimestamp: new Intl.DateTimeFormat("en-US", {timeZone: "America/New_York"}).format(now)
+		}
+		chatContext.addMessage(userMessage)
+		chatContext.setMessageNumber(nextMessageNumber)
+
+		await invokeJob(
+			chatContext.setSessionId, chatContext.setMessageNumber, query, chatContext.sessionId, nextMessageNumber
+		)
 	}
 
 	return (

@@ -30,7 +30,7 @@ async def get_queue(job_id: str) -> asyncio.Queue:
         job_queues[job_id] = asyncio.Queue()
     return job_queues[job_id]
 
-async def publish(job_id: str, event_type: str, data: dict):
+async def publish(job_id: str, event_type: str, data: dict | str):
     queue = await get_queue(job_id)
     await queue.put({
         "type": event_type,
@@ -46,7 +46,15 @@ async def run_job(job_id: str, question: str, message_number):
     membot = MemBot(job_id) 
     result = await membot.ask(question, publish=publish_agent_event)
 
-    await publish(job_id, "done", {"message": "Job Finished", "messageNumber": message_number, "output": result.output})
+    await publish(
+        job_id, "done", result.output
+        # {
+        #     "message": "Job Finished",
+        #     "messageNumber": message_number,
+        #     "output": result.output,
+        #     "timestamp": datetime.now(timezone.utc).isoformat()
+        # }
+    )
 
 async def sse_event_generator(job_id: str):
     queue = await get_queue(job_id)
