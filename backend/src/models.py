@@ -21,11 +21,11 @@ class MemoryKind(str, Enum):
 
 
 class Memory(BaseModel):
-    id: str
+    mem_id: str
     kind: MemoryKind
     title: str
     content: str
-    embedding: Optional[list[float]]
+    embedding: Optional[list[float]] = None
 
 
 class MemoryRetrievalResult(BaseModel):
@@ -34,4 +34,6 @@ class MemoryRetrievalResult(BaseModel):
     content: str
     relevance: float
 
+class DeleteMemoryRequest(BaseModel):
+    mem_id: str
 
