@@ -7,7 +7,7 @@ from pydantic_ai.common_tools.duckduckgo import duckduckgo_search_tool
 from pydantic_ai import Tool
 
 class MemBot(PipedAgent):
-    def __init__(self, job_id):
+    def __init__(self, job_id, job_service, mem_service):
         # async def spawn_resumebot_nowrap(instructions: str):
         #     await spawn_resumebot_serviceless(job_service=JobService(job_id), instructions=instructions)
         #
@@ -16,9 +16,18 @@ class MemBot(PipedAgent):
         #     name="spawn_resumebot",
         #     description="Spawns ResumeBot with the detailed instructions that are given as input. ResumeBot will respond in natural language.",
         # )
+        async def kb_search_tool(query: str, k: int):
+            """
+            Tool for searching through the user's knowledgebase of memories based on a query that is semantically similar to the relevant memories.
+
+            Args:
+                query: the phrase that can be used to find memories that are semantically similar
+                k: the number of top results to find
+            """
+            return await kb_search_prewrap(mem_service, job_service, query, k)
 
         kb_search = Tool(
-            kb_search_prewrap,
+            kb_search_tool,
             name="kb_search",
             description="Searches the knowledgebase of memories for memories that are semantically similar to a query. Returns the top k most relevant results.",
         )

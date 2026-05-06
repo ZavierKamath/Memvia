@@ -87,7 +87,7 @@ async def start_job(payload: StartJobRequest):
         print(f"Using existing job id: {payload.sessionId}")
         job_id = payload.sessionId
 
-    app.state.job_service = JobService(job_id)
+    app.state.job_service = JobService(job_id, app.state.mem_service)
     await app.state.job_service.get_queue(job_id)
     message_number = payload.messageNumber + 1
 
