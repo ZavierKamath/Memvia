@@ -1,7 +1,14 @@
 .user-message {
 	color: white;
+	text-align: right;
+}
+
+.tool-message {
+	color: gray;
+	text-align: left;
 }
 
 .ai-message {
 	color: lime;
+	text-align: left;
 }

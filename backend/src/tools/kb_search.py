@@ -1,8 +1,6 @@
-from src.services.mem_service import MemoryService
-from src.services.job_service import JobService
 from src.models import ToolResult
 
-async def kb_search(mem_service: MemoryService, job_service: JobService, query: str, k: int):
+async def kb_search(mem_service, job_service, query: str, k: int):
     """
     Tool for searching through the user's knowledgebase of memories based on a query that is semantically similar to the relevant memories.
 
@@ -22,7 +20,11 @@ async def kb_search(mem_service: MemoryService, job_service: JobService, query: 
         result += f"_Memory Kind: {row['kind']}_\n"
         result += f"Memory Content: \n\n{row['content']}\n\n"
 
-    tool_result = ToolResult(inputs={"query": query, "k": k}, outputs={"result": result})
-    await job_service.publish(job_service.job_id, "tool_result", tool_result.model_dump)
+    tool_result = ToolResult(
+        tool_name="kb_search",
+        inputs={"query": query, "k": k},
+        outputs={"result": result}
+    )
+    await job_service.publish(job_service.job_id, "tool_result", tool_result.model_dump( ))
     return result
 

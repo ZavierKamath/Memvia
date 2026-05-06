@@ -40,5 +40,6 @@ class DeleteMemoryRequest(BaseModel):
 
 
 class ToolResult(BaseModel):
+    tool_name: str
     inputs: Dict[str, Any]
     outputs: Dict[str, Any]

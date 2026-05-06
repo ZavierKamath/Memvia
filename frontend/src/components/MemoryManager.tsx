@@ -57,7 +57,7 @@ function AddMemoryForm() {
 				onChange={(e) => setContent(e.target.value)}
 				placeholder="Content"
 			/>
-			<button type="submit"></button>
+			<button type="submit">Submit</button>
 		</form>
 	)
 }
