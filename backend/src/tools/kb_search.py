@@ -21,3 +21,5 @@ def kb_search(query: str, k: int):
         result += f"_Memory Kind: {row['kind']}_\n"
         result += f"Memory Content: \n\n{row['content']}\n\n"
 
+    return result
+
