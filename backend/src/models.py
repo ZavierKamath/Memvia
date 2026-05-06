@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, Optional, Dict
 
 from pydantic import BaseModel, Field
 
@@ -34,6 +34,11 @@ class MemoryRetrievalResult(BaseModel):
     content: str
     relevance: float
 
+
 class DeleteMemoryRequest(BaseModel):
     mem_id: str
 
+
+class ToolResult(BaseModel):
+    inputs: Dict[str, Any]
+    outputs: Dict[str, Any]

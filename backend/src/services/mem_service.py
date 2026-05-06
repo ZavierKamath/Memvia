@@ -2,6 +2,9 @@ import sqlite3
 from pathlib import Path
 from contextlib import contextmanager
 import json
+from typing import List
+import math
+from collections import defaultdict
 
 from openai import OpenAI
 import os
@@ -81,3 +84,34 @@ class MemoryService():
                 (mem_id,)
             )
         return f"Deleted memory with id: {mem_id}"
+
+    def _cosine_similarity(self, vec1: List[float], vec2: List[float]):
+        dot = sum(x * y for x, y in zip(vec1, vec2))
+        norm1 = math.sqrt(sum(x * x for x in vec1))
+        norm2 = math.sqrt(sum(y * y for y in vec2))
+
+        if norm1 == 0 or norm2 == 0:
+            raise ValueError("Cosine similarity is undefined for zero vector")
+
+        score = dot / (norm1 * norm2)
+        return score
+
+    def retrieve(self, query: str, k: int):
+        embedded_query = self.embed(query)
+        rows = self.get_memories()
+        store = defaultdict(dict)
+
+        for i, row in enumerate(rows):
+            row_embedding = row["embedding"]
+            score = self._cosine_similarity(embedded_query, row_embedding)
+            store[score] = rows[i]
+
+        result = []
+        largest_first = sorted(store.keys(), reverse=True)
+
+        j = 0
+        while j < k:
+            result.append(store[largest_first[j]])
+            j += 1
+
+        return result
