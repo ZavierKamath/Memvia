@@ -1,11 +1,11 @@
 import asyncio
 import json
 
-# from src.agents.membot import MemBot
+from src.agents.membot import MemBot
 
 class JobService():
+    job_queues: dict[str, asyncio.Queue] = {}
     def __init__(self, job_id):
-        self.job_queues = {}
         self.job_id = job_id
 
     async def get_queue(self, job_id: str) -> asyncio.Queue:
@@ -20,21 +20,16 @@ class JobService():
             "data": data
         })
 
-    async def run_job(self, job_id: str, question: str):
+    async def run_job(self, job_id: str, question: str, message_number: int):
         await self.publish(job_id, "status", {"message": "Job Started"})
 
         async def publish_agent_event(event: dict):
             await self.publish(job_id, "agent", event)
 
-        # membot = MemBot(job_id) 
-        # result = await membot.ask(question, publish=publish_agent_event)
-        class tempResult():
-            def __init__(self, output):
-                self.output = output
+        membot = MemBot(job_id) 
+        result = await membot.ask(question, publish=publish_agent_event)
 
-        result = tempResult("test")
-
-        await self.publish(job_id, "done", {"message": "Job Finished", "output": result.output})
+        await self.publish(job_id, "done", result.output)
 
     async def sse_event_generator(self, job_id: str):
         queue = await self.get_queue(job_id)
