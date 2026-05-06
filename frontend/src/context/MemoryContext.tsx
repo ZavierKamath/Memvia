@@ -1,10 +1,11 @@
 import { createContext, useState } from "react";
 import type { ReactNode } from "react";
+import { getMemories, createMemory, deleteMemory } from "../api/memories.ts";
 
 export type MemoryKind = "experience" | "skills" | "education" | "project" | "other"
 
 export type MemoryType = {
-	id: string
+	mem_id: string
 	kind: MemoryKind
     title: string
     content: string
@@ -12,35 +13,37 @@ export type MemoryType = {
 }
 
 type MemoryContextType = {
-	chat: MemoryType[];
-	sessionId: string;
-	messageNumber: number;
-	addMessage: (message: MemoryType) => void;
-	setSessionId: (sessionId: string) => void;
-	setMessageNumber: (messageNumber: number) => void;
+	memories: MemoryType[];
+	deleteMemoryCTX: (mem_id: string) => Promise<void>;
+	addMemoryCTX: (memory: MemoryType) => Promise<void>;
+	getMemoriesCTX: () => Promise<MemoryType[]>;
 }
 
 export const MemoryContext = createContext<MemoryContextType | null>(null)
 
 export function MemoryProvider({ children }: { children: ReactNode }) {
-	const [chat, setChat] = useState<MemoryType[]>([]);
-	const [sessionId, setChatSessionId] = useState("START");
-	const [messageNumber, setChatMessageNumber] = useState(0);
+	const [memories, setMemories] = useState<MemoryType[]>([]);
 
-	function addMessage(message: MemoryType) {
-		setChat((current) => ([...current, message]));
+	async function addMemoryCTX(memory: MemoryType) {
+		await createMemory(memory)
+		const memories: MemoryType[] = await getMemories()
+		setMemories(memories);
 	}
 
-	function setSessionId(sessionId: string) {
-		setChatSessionId(sessionId);
+	async function deleteMemoryCTX(mem_id: string) {
+		await deleteMemory(mem_id)
+		const memories: MemoryType[] = await getMemories()
+		setMemories(memories)
 	}
 
-	function setMessageNumber(messageNumber: number) {
-		setChatMessageNumber(messageNumber);
+	async function getMemoriesCTX() {
+		const memories: MemoryType[] = await getMemories()
+		setMemories(memories)
+		return memories
 	}
 
 	return (
-		<MemoryContext.Provider value={{ chat, sessionId, messageNumber, addMessage, setSessionId, setMessageNumber }}>
+		<MemoryContext.Provider value={{ memories, deleteMemoryCTX, addMemoryCTX, getMemoriesCTX }}>
 			{children}
 		</MemoryContext.Provider>
 	)

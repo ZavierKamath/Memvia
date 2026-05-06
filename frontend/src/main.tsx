@@ -2,9 +2,19 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import Chat from './components/Chat.tsx';
+import { ChatProvider } from './context/ChatContext.tsx';
+import { MemoryProvider } from './context/MemoryContext.tsx';
+import { TabProvider } from './context/TabContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+		<TabProvider>
+			<MemoryProvider>
+				<ChatProvider>
+					<App />
+				</ChatProvider>
+			</MemoryProvider>
+		</TabProvider>
   </StrictMode>,
 )

@@ -17,7 +17,13 @@ from src.services.mem_service import MemoryService
 
 load_dotenv()
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.mem_service = MemoryService()
+    app.state.mem_service.init_db()
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,12 +32,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    app.state.mem_service = MemoryService()
-    app.state.mem_service.init_db()
-    yield
 
 @app.get("/memories")
 async def get_memories():

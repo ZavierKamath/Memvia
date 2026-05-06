@@ -11,7 +11,7 @@ load_dotenv()
 
 from src.models import Memory, MemoryRetrievalResult
 
-BASE_DIR = Path(__file__).resolve().parents[4]
+BASE_DIR = Path(__file__).resolve().parents[3]
 
 class MemoryService():
     def __init__(self):
@@ -60,7 +60,7 @@ class MemoryService():
         embedding = json.dumps(embedding)
         with self.connection() as conn:
             conn.execute(
-                "INSERT INTO memories (id, kind, title, content, embedding) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO memories (mem_id, kind, title, content, embedding) VALUES (?, ?, ?, ?, ?)",
                 (mem_id, kind, title, content, embedding,)
             )
         return f"Created memory with id: {mem_id}"
