@@ -1,3 +1,19 @@
+h1 {
+	font-size: 28px;
+}
+
+h2 {
+	font-size: 16px;
+}
+
+.tab-switcher-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	margin: 8px;
+}
+
 .user-message {
 	color: white;
 	text-align: right;
