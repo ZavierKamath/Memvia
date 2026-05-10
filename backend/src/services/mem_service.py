@@ -78,11 +78,14 @@ class MemoryService():
         return rows
 
     def delete_memory(self, mem_id: str):
-        with self.connection() as conn:
-            conn.execute(
-                "DELETE FROM memories WHERE mem_id = ?",
-                (mem_id,)
-            )
+        try:
+            with self.connection() as conn:
+                conn.execute(
+                    "DELETE FROM memories WHERE mem_id = ?",
+                    (mem_id,)
+                )
+        except Exception as e:
+            print(f"Error in deletion: {str(e)}")
         return f"Deleted memory with id: {mem_id}"
 
     def _cosine_similarity(self, vec1: List[float], vec2: List[float]):

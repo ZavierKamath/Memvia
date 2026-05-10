@@ -7,6 +7,9 @@ export function createEventListenersForJob(
 	addMessage: (message: ChatMessageType) => void,
 	addToolMessage: (toolMessage: ToolMessageType) => void
 ) {
+	if (jobId === 'START') {
+		return 
+	}
 	setSessionId(jobId);
 
 	const es = new EventSource(`http://localhost:8000/jobs/${jobId}/stream`)
