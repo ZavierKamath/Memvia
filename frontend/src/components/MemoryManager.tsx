@@ -1,37 +1,98 @@
 import { useState, useEffect } from "react"
 import { useMemories } from '../hooks/useMemories'
 import type { MemoryKind, MemoryType } from '../context/MemoryContext'
-function MemoryCard({ memory, deleteMemoryFunction }: { memory: MemoryType, deleteMemoryFunction: (mem_id: string) => Promise<void> }) {
+
+function MemoryCard(
+	{ memory, deleteMemoryFunction, addMemoryFunction }:
+	{
+		memory: MemoryType,
+		deleteMemoryFunction: (mem_id: string) => Promise<void>
+		addMemoryFunction: (memory: MemoryType) => void
+	}) {
+
+	const [editing, setEditing] = useState(false)
+
+	function toggleEditing() {
+		setEditing(editing ? false : true)
+	}
+
+	function conditionalRenderEditMode() {
+		if (!editing) {
+			return (
+				<>
+					<header>
+						<h3>{memory.title}</h3>
+						<div className="button-area">
+							<button
+								className="edit-button"
+								onClick={() => toggleEditing()}
+							>edit</button>
+							<button
+								className="delete-button"
+								onClick={() => deleteMemoryFunction(memory.mem_id)}
+			                >delete</button>
+						</div>
+					</header>
+					<h4>{memory.kind}</h4>
+					<p>{memory.content}</p>
+				</>
+			)
+		} else {
+			return (
+				<>
+				<AddMemoryForm
+					initKind={memory.kind}
+					initMemId={memory.mem_id}
+					initTitle={memory.title}
+					initContent={memory.content}
+					isEdit={true}
+					setEditing={setEditing}
+				/>
+				</>
+			)
+		}
+	}
+
 	return (
-		<>
-			<h3>{memory.title}</h3>
-			<p>{memory.kind}</p>
-			<p>{memory.content}</p>
-			<button onClick={() => deleteMemoryFunction(memory.mem_id)}>delete</button>
-		</>
+		<div className="memory-card-container">
+			{conditionalRenderEditMode()}
+		</div>
 	)
 }
 
-function AddMemoryForm() {
+function AddMemoryForm(
+	{ initMemId, initTitle, initKind, initContent, isEdit, setEditing }:
+	{
+		initMemId: string,
+		initTitle: string,
+		initKind: MemoryKind,
+		initContent: string,
+		isEdit: boolean,
+		setEditing: any
+	}
+) {
 	const memoryContext = useMemories();
-	const [title, setTitle] = useState("")
-	const [kind, setKind] = useState<MemoryKind>("other")
-	const [content, setContent] = useState("")
+	const [title, setTitle] = useState(initTitle)
+	const [kind, setKind] = useState<MemoryKind>(initKind)
+	const [content, setContent] = useState(initContent)
 
 	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault()
-		const mem_id = crypto.randomUUID()
 		const memory: MemoryType = {
-			mem_id: mem_id,
+			mem_id: initMemId,
 			kind: kind,
 			title: title,
 			content: content,
 			embedding: null
 		}
+		memoryContext.deleteMemoryCTX(memory.mem_id)
 		memoryContext.addMemoryCTX(memory)
 		setTitle("")
 		setKind("other")
 		setContent("")
+		if (isEdit) {
+			setEditing(false)
+		}
 	}
 
 	return (
@@ -41,7 +102,7 @@ function AddMemoryForm() {
 				name="title"
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
-				placeholder="Title"
+				placeholder={initTitle}
 			/>
 			<select value={kind} onChange={(e) => setKind(e.target.value as MemoryKind)} name="kind">
 				<option value="experience">Experience</option>
@@ -57,7 +118,7 @@ function AddMemoryForm() {
 				onChange={(e) => setContent(e.target.value)}
 				placeholder="Content"
 			/>
-			<button type="submit"></button>
+			<button type="submit">Submit</button>
 		</form>
 	)
 }
@@ -74,12 +135,28 @@ export function MemoryManager() {
 	}, [])
 
 	return (
-		<>
+		<div className="memory-manager">
 			<h1>Memories</h1>
-			<AddMemoryForm />
-			{memoryContext.memories.map((memory) => (
-				<MemoryCard key={memory.mem_id} memory={memory} deleteMemoryFunction={memoryContext.deleteMemoryCTX} />
-			))}
-		</>
+			<h2>Add Memory</h2>
+			<AddMemoryForm
+				initKind="other"
+				initMemId={crypto.randomUUID().toString()}
+				initTitle="Title"
+				initContent="Content"
+				isEdit={false}
+				setEditing={null}
+			/>
+			<h2>View Memories</h2>
+			<div className="memory-card-library">
+				{memoryContext.memories.map((memory) => (
+					<MemoryCard
+						key={memory.mem_id}
+						memory={memory}
+						deleteMemoryFunction={memoryContext.deleteMemoryCTX}
+						addMemoryFunction={memoryContext.addMemoryCTX}
+					/>
+				))}
+			</div>
+		</div>
 	)
 }

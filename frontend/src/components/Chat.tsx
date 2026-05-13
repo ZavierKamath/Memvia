@@ -1,7 +1,46 @@
 import { useState, useEffect } from 'react';
 import { invokeJob, createEventListenersForJob } from '../api/jobs.ts';
 import { useChat } from '../hooks/useChat.tsx';
-import type { ChatMessageType } from '../context/ChatContext.tsx'
+import type { ChatItemType, ChatMessageType, ToolMessageType } from '../context/ChatContext.tsx'
+
+function ToolMessage({ message }: { message: ToolMessageType }) {
+	const [expanded, setExpanded] = useState(false)
+
+	function toggleExpanded() {
+		setExpanded(expanded ? false : true)
+	}
+
+	const { toolName, inputs, outputs } = {
+		toolName: message.toolName,
+		inputs: message.inputs,
+		outputs: message.outputs
+	}
+
+	function conditionalExpandedRender() {
+		if (expanded) {
+			return (
+				<>
+					<div>{toolName}</div>
+					<div>{JSON.stringify(inputs)}</div>
+					<div>{JSON.stringify(outputs)}</div>
+				</>
+			)
+		}
+		return <div>{toolName}</div>
+	}
+
+	function upOrDown() {
+		return expanded ? "^" : "⌄"
+	}
+
+	return (
+		<div className="tool-message">
+			<p>Tool Use</p>
+			{conditionalExpandedRender()}
+			<button onClick={() => toggleExpanded()}>{upOrDown()}</button>
+		</div>
+	)
+}
 
 function ChatMessage({ message }: { message: ChatMessageType }) {
 	const { sender, message_content, number, sentTimestamp } = {
@@ -30,13 +69,18 @@ function Screen() {
 	const chatContext = useChat();
 	const chat = chatContext.chat;
 
+	function conditionalMessageRender(message: ChatItemType) {
+		if ("toolName" in message) {
+			return <ToolMessage key={JSON.stringify(message.outputs)} message={message} />
+		}
+
+		return <ChatMessage key={message.number} message={message} />
+	}
+
 	return (
 		<>
-			{chat.map((message: ChatMessageType) => (
-				<ChatMessage
-					key={message.number}
-					message={message}
-				/>
+			{chat.map((message: ChatItemType) => (
+				conditionalMessageRender(message)
 			))}
 		</>
 	)
@@ -48,7 +92,13 @@ export default function Chat() {
 
 	useEffect(() => {
 		if (!chatContext.sessionId) return
-		return createEventListenersForJob(chatContext.sessionId, chatContext.messageNumber, chatContext.setSessionId, chatContext.addMessage)
+		return createEventListenersForJob(
+			chatContext.sessionId,
+			chatContext.messageNumber,
+			chatContext.setSessionId,
+			chatContext.addMessage,
+			chatContext.addToolMessage
+		)
 	}, [chatContext.sessionId, chatContext.messageNumber]);
 
 	async function handleSend() {
@@ -72,6 +122,8 @@ export default function Chat() {
 		await invokeJob(
 			chatContext.setSessionId, chatContext.setMessageNumber, query, chatContext.sessionId, nextMessageNumber
 		)
+
+		setInputText("")
 	}
 
 	return (

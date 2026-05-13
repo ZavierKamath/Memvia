@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from enum import Enum
-from typing import Any, Optional, Dict
+from typing import Any, Optional, Dict, List
 
 from pydantic import BaseModel, Field
 
@@ -40,5 +40,11 @@ class DeleteMemoryRequest(BaseModel):
 
 
 class ToolResult(BaseModel):
+    tool_name: str
     inputs: Dict[str, Any]
     outputs: Dict[str, Any]
+
+
+class SkillSection(BaseModel):
+    section_name: str
+    section_elements: List[str]

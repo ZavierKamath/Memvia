@@ -1,6 +1,15 @@
-import type { ChatMessageType } from "../context/ChatContext.tsx"
+import type { ChatMessageType, ToolMessageType } from "../context/ChatContext.tsx"
 
-export function createEventListenersForJob(jobId: string, messageNumber: number, setSessionId: (sessionId: string) => void, addMessage: (message: ChatMessageType) => void) {
+export function createEventListenersForJob(
+	jobId: string,
+	messageNumber: number,
+	setSessionId: (sessionId: string) => void,
+	addMessage: (message: ChatMessageType) => void,
+	addToolMessage: (toolMessage: ToolMessageType) => void
+) {
+	if (jobId === 'START') {
+		return 
+	}
 	setSessionId(jobId);
 
 	const es = new EventSource(`http://localhost:8000/jobs/${jobId}/stream`)
@@ -26,6 +35,17 @@ export function createEventListenersForJob(jobId: string, messageNumber: number,
 		// 	number: messageNumber,
 		// 	sentTimestamp: "testtime"
 		// })
+	})
+
+	es.addEventListener("tool_result", (event) => {
+		const data = JSON.parse(event.data)
+		console.log(`tool_result data: ${JSON.stringify(data)}`)
+		const toolMessage: ToolMessageType = {
+			toolName: data.tool_name,
+			inputs: data.inputs,
+			outputs: data.outputs
+		}
+		addToolMessage(toolMessage)
 	})
 
 	es.addEventListener("agent", (event) => {

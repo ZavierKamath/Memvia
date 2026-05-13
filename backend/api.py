@@ -1,7 +1,6 @@
 import asyncio
 from uuid import uuid4
 import json
-from datetime import datetime, timezone
 from contextlib import asynccontextmanager
 from typing import List
 
@@ -11,7 +10,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 from src.models import StartJobRequest, Memory, DeleteMemoryRequest
-from src.agents.membot import MemBot
 from src.services.job_service import JobService
 from src.services.mem_service import MemoryService
 
@@ -87,7 +85,7 @@ async def start_job(payload: StartJobRequest):
         print(f"Using existing job id: {payload.sessionId}")
         job_id = payload.sessionId
 
-    app.state.job_service = JobService(job_id)
+    app.state.job_service = JobService(job_id, app.state.mem_service)
     await app.state.job_service.get_queue(job_id)
     message_number = payload.messageNumber + 1
 

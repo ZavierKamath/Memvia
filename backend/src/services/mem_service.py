@@ -78,11 +78,14 @@ class MemoryService():
         return rows
 
     def delete_memory(self, mem_id: str):
-        with self.connection() as conn:
-            conn.execute(
-                "DELETE FROM memories WHERE mem_id = ?",
-                (mem_id,)
-            )
+        try:
+            with self.connection() as conn:
+                conn.execute(
+                    "DELETE FROM memories WHERE mem_id = ?",
+                    (mem_id,)
+                )
+        except Exception as e:
+            print(f"Error in deletion: {str(e)}")
         return f"Deleted memory with id: {mem_id}"
 
     def _cosine_similarity(self, vec1: List[float], vec2: List[float]):
@@ -99,19 +102,13 @@ class MemoryService():
     def retrieve(self, query: str, k: int):
         embedded_query = self.embed(query)
         rows = self.get_memories()
-        store = defaultdict(dict)
+        k = min(len(rows), k)
+        scored = []
 
         for i, row in enumerate(rows):
             row_embedding = row["embedding"]
             score = self._cosine_similarity(embedded_query, row_embedding)
-            store[score] = rows[i]
+            scored.append((score, row))
 
-        result = []
-        largest_first = sorted(store.keys(), reverse=True)
-
-        j = 0
-        while j < k:
-            result.append(store[largest_first[j]])
-            j += 1
-
-        return result
+        top_results = [item for _, item in sorted(scored, reverse=True)[:k]]
+        return top_results
