@@ -3,7 +3,7 @@ import { invokeJob, createEventListenersForJob } from '../api/jobs.ts';
 import { useChat } from '../hooks/useChat.tsx';
 import type { ChatItemType, ChatMessageType, ToolMessageType } from '../context/ChatContext.tsx'
 
-function ToolMessage({ message }: { message: ToolMessageType }) {
+function ToolMessage({ message, agent }: { message: ToolMessageType, agent: "membot" | "resumebot" }) {
 	const [expanded, setExpanded] = useState(false)
 
 	function toggleExpanded() {
@@ -33,8 +33,10 @@ function ToolMessage({ message }: { message: ToolMessageType }) {
 		return expanded ? "^" : "⌄"
 	}
 
+	const toolContainerClasses: string = `tool-message ${agent}`
+
 	return (
-		<div className="tool-message">
+		<div className={toolContainerClasses}>
 			<p>Tool Use</p>
 			{conditionalExpandedRender()}
 			<button onClick={() => toggleExpanded()}>{upOrDown()}</button>
@@ -65,13 +67,34 @@ function ChatMessage({ message }: { message: ChatMessageType }) {
 	)
 }
 
+function ResumeScreen() {
+	const chatContext = useChat();
+	const resumeChat = chatContext.resumeBotChat
+
+	function conditionalMessageRender(message: ChatItemType) {
+		if ("toolName" in message) {
+			return <ToolMessage key={JSON.stringify(message.outputs)} message={message} agent="membot" />
+		}
+
+		return <ChatMessage key={message.number} message={message} />
+	}
+
+	return (
+		<>
+			{resumeChat.map((message: ChatItemType) => (
+				conditionalMessageRender(message)
+			))}
+		</>
+	)
+}
+
 function Screen() {
 	const chatContext = useChat();
 	const chat = chatContext.chat;
 
 	function conditionalMessageRender(message: ChatItemType) {
 		if ("toolName" in message) {
-			return <ToolMessage key={JSON.stringify(message.outputs)} message={message} />
+			return <ToolMessage key={JSON.stringify(message.outputs)} message={message} agent="membot" />
 		}
 
 		return <ChatMessage key={message.number} message={message} />
@@ -97,7 +120,10 @@ export default function Chat() {
 			chatContext.messageNumber,
 			chatContext.setSessionId,
 			chatContext.addMessage,
-			chatContext.addToolMessage
+			chatContext.addToolMessage,
+			chatContext.setResumeBotView,
+			chatContext.addResumeBotToolMessage,
+			chatContext.setResumePDFPath
 		)
 	}, [chatContext.sessionId, chatContext.messageNumber]);
 
@@ -126,10 +152,23 @@ export default function Chat() {
 		setInputText("")
 	}
 
+	function conditionalScreenRender() {
+		if (chatContext.resumeBotView) {
+			return (
+				<div className="screens-container">	
+					<Screen />
+					<ResumeScreen />
+				</div>	
+			)
+		} else {
+			return <Screen />	
+		}
+	}
+
 	return (
 		<div>
 			<h1>Chat</h1>
-			<Screen />
+			{conditionalScreenRender()}
 			<input
 				value={inputText}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputText(e.target.value)}

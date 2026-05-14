@@ -2,11 +2,12 @@ from src.agents.resumebot import ResumeBot
 from src.models import ToolResult
 
 async def spawn_resumebot_prewrap(job_service, instructions: str):
-    job_id = job_service.job_id
-    resumebot = ResumeBot(job_id)
+    resumebot = ResumeBot(job_service)
+
+    await job_service.publish(job_service.job_id, "start_resumebot", {"instructions": instructions})
 
     async def publish_agent_event(event: dict):
-        await job_service.publish(job_id, "agent", event)
+        await job_service.publish(job_service.job_id, "agent", event)
 
     result = await resumebot.ask(instructions, publish=publish_agent_event)
 

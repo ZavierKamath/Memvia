@@ -1,16 +1,21 @@
 from pathlib import Path
-import os
 from typing import List, Tuple, Optional
+from shutil import copy2
+from tempfile import TemporaryDirectory
+import subprocess
+from uuid import uuid4
 
 from src.models import SkillSection
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 
 class TexService():
-    def __init__(self):
-        self.sessions_path = BASE_DIR / "backend" / "sessions"
+    def __init__(self, session_id: str):
+        self.session_path = BASE_DIR / "backend" / "sessions" / session_id
+        self.session_id = session_id
         self.resume_string = r""
         self.sections = set()
+        self.template_path = BASE_DIR / "data" / "resume_template.cls"
 
     def resume_start(self, name: str, contacts: List[Tuple[str, str]], summary: Optional[str] = None):
         self.resume_string += r"\documentclass{resume_template}\n\n"
@@ -32,7 +37,8 @@ class TexService():
         if not "start" in self.sections:
             return "Must start the resume before making an Experience section"
 
-        self.resume_string += r"\section{Experience}\n"
+        if not "experience" in self.sections:
+            self.resume_string += r"\section{Experience}\n"
 
         date_start = dates[0]
         date_end = dates[1]
@@ -51,7 +57,8 @@ class TexService():
         if not "start" in self.sections:
             return "Must start the resume before making an Education section"
 
-        self.resume_string += r"\section{Education}\n"
+        if not "education" in self.sections:
+            self.resume_string += r"\section{Education}\n"
 
         date_start = dates[0]
         date_end = dates[1]
@@ -66,7 +73,8 @@ class TexService():
         if not "start" in self.sections:
             return "Must start the resume before making a Skills section"
 
-        self.resume_string += r"\section{Skills}\n"
+        if not "skills" in self.sections:
+            self.resume_string += r"\section{Skills}\n"
 
         for section in sections:
             self.resume_string += f"\\resumelabelline{{{section.section_name}:}}"
@@ -86,3 +94,40 @@ class TexService():
 
     def resume_end(self):
         self.resume_string += r"\end{document}"
+        result = self._compile_tex()
+        return result
+
+    def _compile_tex(self):
+        output_pdf = self.session_path / "resumes" / str(uuid4())
+        output_pdf = output_pdf.resolve()
+        output_pdf.parent.mkdir(parents=True, exist_ok=True)
+        with TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            tex_file = temp_path / "resume.tex"
+            tex_file.write_text(self.resume_string, encoding="utf-8")
+            copy2(self.template_path, temp_path / "resume_template.cls")
+
+            command = [
+                "latexmk",
+                "-pdf",
+                "-interaction=nonstopmode",
+                f"-output-directory={temp_path}",
+                tex_file.name,
+            ]
+
+            result = subprocess.run(
+                command,
+                cwd=temp_path,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            built_pdf = temp_path / "resume.pdf"
+            if result.returncode != 0 or not built_pdf.exists():
+                raise RuntimeError(result.stderr or result.stdout or "latexmk failed")
+
+            copy2(built_pdf, output_pdf)
+            self.output_path = output_pdf
+            return f"Resume compiled and output pdf located at: {output_pdf}"
+
