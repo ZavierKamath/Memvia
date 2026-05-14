@@ -71,7 +71,7 @@ export function createEventListenersForJob(
 	es.addEventListener("end_resumebot", (event) => {
 		const data = JSON.parse(event.data)
 		console.log(`end_resumebot data: ${JSON.stringify(data)}`)
-		setResumePDFPath(data.output_path)
+		setResumePDFPath(data.outputs.output_path)
 	})
 
 	es.addEventListener("agent", (event) => {

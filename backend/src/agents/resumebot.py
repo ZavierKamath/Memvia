@@ -15,7 +15,7 @@ class ResumeBot(PipedAgent):
 
             Args:
                 name: the owner of the resume's name
-                contacts: a list of tuples where the first element is the display text of the contact and the second element is the link of the text
+                contacts: a list of tuples where the first element is the link of the contact and the second element is the display text of the contact
                 summary: high level resume summary that cannot be more than 1 sentence
             """
             return await start_resume_prewrap(job_service, tex_service, name, contacts, summary)
@@ -63,7 +63,7 @@ class ResumeBot(PipedAgent):
             description="Tool to add education to a resume. Make sure to only add educations one after the other with no skills or experiences inbetween.",
         )
 
-        async def resume_add_skills_tool(job_service, tex_service, sections: List[SkillSection]):
+        async def resume_add_skills_tool(sections: List[SkillSection]):
             """
             Tool for adding an skills to the skills secton of an already initialized resume
 
@@ -78,19 +78,22 @@ class ResumeBot(PipedAgent):
             description="Tool to add skills to a resume. Make sure to only add skills one after the other with no educations or experiences inbetween.",
         )
 
-        async def resume_end_tool(job_service, tex_service):
+        async def resume_end_tool():
             """
             Tool for ending and compiling a resume and producing a PDF
 
             Args:
                 N/A
+
+            Returns:
+                Pdf output path of resume
             """
             return await end_resume_prewrap(job_service, tex_service)
 
         end_resume = Tool(
             resume_end_tool,
             name="end_resume",
-            description="Tool for ending a resume and getting the file path of the outputted pdf."
+            description="Tool for ending a resume and getting the file path of the outputted pdf. MUST BE USED WHENEVER YOU START A RESUME."
         )
 
 

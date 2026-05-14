@@ -45,10 +45,10 @@ function ToolMessage({ message, agent }: { message: ToolMessageType, agent: "mem
 }
 
 function ChatMessage({ message }: { message: ChatMessageType }) {
-	const { sender, message_content, number, sentTimestamp } = {
+	const { sender, message_content, _number, sentTimestamp } = {
 		sender: message.sender,
 		message_content: message.message,
-		number: message.number,
+		_number: message.number,
 		sentTimestamp: message.sentTimestamp
 	}
 	console.log(`rendering message with sender: ${sender}, content: ${message_content.slice(0, 25)}..., number: ${message.number}, time: ${sentTimestamp}`)
@@ -73,18 +73,18 @@ function ResumeScreen() {
 
 	function conditionalMessageRender(message: ChatItemType) {
 		if ("toolName" in message) {
-			return <ToolMessage key={JSON.stringify(message.outputs)} message={message} agent="membot" />
+			return <ToolMessage key={JSON.stringify(message.outputs)} message={message} agent="resumebot" />
 		}
 
 		return <ChatMessage key={message.number} message={message} />
 	}
 
 	return (
-		<>
+		<div className="resume-screen-container">
 			{resumeChat.map((message: ChatItemType) => (
 				conditionalMessageRender(message)
 			))}
-		</>
+		</div>
 	)
 }
 

@@ -2,7 +2,7 @@ from src.models import ToolResult, SkillSection
 from typing import List, Tuple, Optional
 
 async def start_resume_prewrap(job_service, tex_service, name, contacts, summary):
-    result = tex_service.resume_start(name=name, contacts=contacts, summary=summary)
+    result = tex_service.resume_start(name, contacts, summary)
 
     tool_result = ToolResult(
         tool_name="start_resume",
@@ -36,7 +36,7 @@ async def add_experience_to_resume_prewrap(job_service, tex_service, title, date
     return result
 
 async def add_education_to_resume_prewrap(job_service, tex_service, school: str, dates: Tuple[str, str], degree: str, location: str):
-    result = tex_service.resume_add_education(tex_service, school, dates, degree, location)
+    result = tex_service.resume_add_education(school, dates, degree, location)
 
     tool_result = ToolResult(
         tool_name="add_education_to_resume",
@@ -53,7 +53,7 @@ async def add_education_to_resume_prewrap(job_service, tex_service, school: str,
     return result
 
 async def add_skills_to_resume_prewrap(job_service, tex_service, sections: List[SkillSection]):
-    result = tex_service.resume_add_education(tex_service, sections)
+    result = tex_service.resume_add_skills(sections)
 
     tool_result = ToolResult(
         tool_name="add_skills_to_resume",
