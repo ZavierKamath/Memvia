@@ -40,6 +40,8 @@ h2 {
 	border: 1px solid white;
 	padding: 8px;
 	position: relative;
+	min-width: 70%;
+	max-width: 70%;
 }
 
 .resume-screen-container {
@@ -69,7 +71,7 @@ h2 {
 	border: 1px solid white;
 	padding: 8px;
 	margin: 8px 8px 8px auto;
-	width: 65%;
+	max-width: 55%;
 }
 
 .ai-message {
@@ -78,7 +80,7 @@ h2 {
 	border: 1px solid lime;
 	padding: 8px;
 	margin: 8px;
-	width: 65%;
+	max-width: 55%;
 }
 
 .tool-message {

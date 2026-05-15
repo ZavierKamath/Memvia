@@ -1,7 +1,47 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { invokeJob, createEventListenersForJob } from '../api/jobs.ts';
 import { useChat } from '../hooks/useChat.tsx';
 import type { ChatItemType, ChatMessageType, ToolMessageType } from '../context/ChatContext.tsx'
+import { Document, Page, pdfjs } from "react-pdf";
+
+
+function PDFCard({ pdfPath }: { pdfPath: string }) {
+    const boxRef = useRef(null);
+    const [pageWidth, setPageWidth] = useState(240);
+
+	pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+		"pdfjs-dist/build/pdf.worker.min.mjs",
+		import.meta.url
+	).toString()
+
+	const urlToPdf = `http://localhost:8000/documents/${pdfPath}`
+
+    useEffect(() => {
+		function updateWidth() {
+		if (boxRef.current) {
+			setPageWidth(boxRef.current.clientWidth);
+        }
+    }
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+	return (
+		<div
+			ref={boxRef}
+			style={{
+				width: "100%",
+				maxWidth: 260,
+				overflow: "hidden",
+				borderRadius: 12,
+			}}
+		>
+			<Document file={urlToPdf}>
+				<Page pageNumber={1} width={pageWidth} />
+			</Document>
+		</div>
+  );
+}
 
 function ToolMessage({ message, agent }: { message: ToolMessageType, agent: "membot" | "resumebot" }) {
 	const [expanded, setExpanded] = useState(false)
@@ -79,6 +119,14 @@ function ResumeScreen() {
 		return <ChatMessage key={message.number} message={message} />
 	}
 
+	function conditionalPdfRender() {
+		if (chatContext.resumePdfPath !== "") {
+			return <PDFCard pdfPath={chatContext.resumePdfPath} />
+		} else {
+			return
+		}
+	}
+
 	return (
 		<div className="resume-screen-container">
 			<h2>ResumeBot</h2>
@@ -88,6 +136,7 @@ function ResumeScreen() {
 					conditionalMessageRender(message)
 				))}
 			</div>
+			{conditionalPdfRender()}
 		</div>
 	)
 }
