@@ -19,14 +19,14 @@ function ToolMessage({ message, agent }: { message: ToolMessageType, agent: "mem
 	function conditionalExpandedRender() {
 		if (expanded) {
 			return (
-				<>
-					<div>{toolName}</div>
-					<div>{JSON.stringify(inputs)}</div>
-					<div>{JSON.stringify(outputs)}</div>
-				</>
+				<div className="tool-expanded">
+					<div className="tool-message-part tool-name">{toolName}</div>
+					<div className="tool-message-part tool-inputs">{JSON.stringify(inputs)}</div>
+					<div className="tool-message-part tool-outputs">{JSON.stringify(outputs)}</div>
+				</div>
 			)
 		}
-		return <div>{toolName}</div>
+		return <div className="tool-message-part tool-name">{toolName}</div>
 	}
 
 	function upOrDown() {
@@ -37,7 +37,7 @@ function ToolMessage({ message, agent }: { message: ToolMessageType, agent: "mem
 
 	return (
 		<div className={toolContainerClasses}>
-			<p>Tool Use</p>
+			<p>Tool Use:</p>
 			{conditionalExpandedRender()}
 			<button onClick={() => toggleExpanded()}>{upOrDown()}</button>
 		</div>
@@ -60,9 +60,9 @@ function ChatMessage({ message }: { message: ChatMessageType }) {
 
 	return (
 		<div className={className}>
-			<div>{sender}</div>
-			<div>{message_content.replace(/^['"]|['"]$/g, "")}</div>
-			<div>{sentTimestamp}</div>
+			<div className="chat-message-part sender">{sender}</div>
+			<div className="chat-message-part content">{message_content.replace(/^['"]|['"]$/g, "")}</div>
+			<div className="chat-message-part timestamp">{sentTimestamp}</div>
 		</div>
 	)
 }
@@ -81,9 +81,13 @@ function ResumeScreen() {
 
 	return (
 		<div className="resume-screen-container">
-			{resumeChat.map((message: ChatItemType) => (
-				conditionalMessageRender(message)
-			))}
+			<h2>ResumeBot</h2>
+			<button onClick={() => chatContext.setResumeBotView(false)} className="floating-close-resume-chat">X</button>
+			<div className="resume-screen-messages">
+				{resumeChat.map((message: ChatItemType) => (
+					conditionalMessageRender(message)
+				))}
+			</div>
 		</div>
 	)
 }
@@ -100,12 +104,25 @@ function Screen() {
 		return <ChatMessage key={message.number} message={message} />
 	}
 
+	function showArrow() {
+		if (chatContext.resumeBotView) {
+			return	
+		} else {
+			return <button onClick={() => chatContext.setResumeBotView(true)} className="floating-open-resume-chat">→</button>
+		}
+	
+	}
+
 	return (
-		<>
-			{chat.map((message: ChatItemType) => (
-				conditionalMessageRender(message)
-			))}
-		</>
+		<div className="screen-container">
+			<h2>MemBot</h2>
+			<div className="screen-content">
+				{showArrow()}
+				{chat.map((message: ChatItemType) => (
+					conditionalMessageRender(message)
+				))}
+			</div>
+		</div>
 	)
 }
 
@@ -161,24 +178,27 @@ export default function Chat() {
 				</div>	
 			)
 		} else {
-			return <Screen />	
+			return (
+					<Screen />	
+			)
 		}
 	}
 
 	return (
-		<div>
-			<h1>Chat</h1>
+		<div className="chat-screen">
 			{conditionalScreenRender()}
-			<input
-				value={inputText}
-				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputText(e.target.value)}
-				placeholder="Type your question"
-			/>
-			<button
-				onClick={handleSend}
-			>
-				Send
-			</button>
+			<div className="sendbar">
+				<input
+					value={inputText}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputText(e.target.value)}
+					placeholder="Type your question"
+				/>
+				<button
+					onClick={handleSend}
+				>
+					Send
+				</button>
+			</div>
 		</div>
 	);
 }

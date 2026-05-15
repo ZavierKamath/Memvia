@@ -71,9 +71,10 @@ async def end_resume_prewrap(job_service, tex_service):
 
     tool_result = ToolResult(
         tool_name="end_resume",
-        inputs={"output_path": tex_service.output_path},
-        outputs={"result": result, "output_path": tex_service.output_path}
+        inputs={"output_path": str(tex_service.output_path)},
+        outputs={"result": result, "output_path": str(tex_service.output_path)}
     )
 
+    await job_service.publish(job_service.job_id, "resumebot_tool_result", tool_result.model_dump())
     await job_service.publish(job_service.job_id, "end_resumebot", tool_result.model_dump())
     return result

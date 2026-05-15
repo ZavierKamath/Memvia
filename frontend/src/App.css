@@ -1,9 +1,28 @@
+header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+}
+
 h1 {
 	font-size: 28px;
+	margin: 0;
 }
 
 h2 {
 	font-size: 16px;
+	margin: 0;
+}
+
+.chat-screen {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	padding: 32px;
 }
 
 .screens-container {
@@ -14,12 +33,25 @@ h2 {
 	gap: 16px;
 }
 
+.screen-container {
+	width: auto;
+	height: 70vh;
+	overflow: auto;
+	border: 1px solid white;
+	padding: 8px;
+	position: relative;
+}
+
 .resume-screen-container {
+	width: 40vw;
+	height: 70vh;
+	overflow: auto;
+	border: 1px solid white;
+	padding: 8px;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 	gap: 4px;
+	position: relative;
 }
 
 .tab-switcher-container {
@@ -28,6 +60,7 @@ h2 {
 	align-items: center;
 	justify-content: center;
 	margin: 8px;
+	gap: 16px;
 }
 
 .user-message {
@@ -49,8 +82,54 @@ h2 {
 }
 
 .tool-message {
-	color: gray;
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+	width: 18vw;
+	font-size: 13px;
+}
+
+.tool-message > button {
+	font-size: 10;
+	padding: 1px;
+}
+
+.tool-expanded {
+	display: flex;
+	flex-direction: column;
+}
+
+.user-message > .chat-message-part.sender {
+	color: #BDBDBD;
+}
+
+.user-message > .chat-message-part.content {
+	color: white;
+}
+
+.user-message > .chat-message-part.timestamp {
+	color: #BDBDBD;
+}
+
+.ai-message > .chat-message-part.sender {
+	color: #BDBDBD;
+}
+
+.ai-message > .chat-message-part.content {
+	color: white;
+}
+
+.ai-message > .chat-message-part.timestamp {
+	color: #BDBDBD;
+}
+
+.tool-message.membot {
+	color: #ADADAD;
 	text-align: left;
+}
+
+.tool-message.membot > .tool-message-part.tool-name {
+	color: gray;
 }
 
 .memory-card-container {
@@ -70,4 +149,32 @@ h2 {
 
 .memory-manager > h2 {
 	margin: 16px;
+}
+
+.chat-screen > div > input {
+	width: 50vw;
+	height: 5vh;
+	font-size: 16px;
+}
+
+.tool-message.resumebot {
+	color: cyan;
+}
+
+.tool-message.resumebot > .tool-message-part.tool-name {
+	color: #77BFBF;
+}
+
+.floating-close-resume-chat {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 10;
+}
+
+.floating-open-resume-chat {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 10;
 }
