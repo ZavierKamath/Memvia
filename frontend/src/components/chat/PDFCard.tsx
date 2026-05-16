@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/Page/TextLayer.css";
+import "react-pdf/dist/Page/AnnotationLayer.css";
 
 export function PDFCard({ pdfPath }: { pdfPath: string }) {
     const boxRef = useRef(null);
-    const [pageWidth, setPageWidth] = useState(240);
 
 	pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 		"pdfjs-dist/build/pdf.worker.min.mjs",
@@ -12,28 +13,25 @@ export function PDFCard({ pdfPath }: { pdfPath: string }) {
 
 	const urlToPdf = `http://localhost:8000/documents/${pdfPath}`
 
-    useEffect(() => {
-		function updateWidth() {
-			updateWidth();
-			window.addEventListener("resize", updateWidth);
-			if (boxRef.current) {
-				setPageWidth(boxRef.current.clientWidth);
-			}
-		}
-		return () => window.removeEventListener("resize", updateWidth);
-    }, []);
 	return (
 		<div
 			ref={boxRef}
-			style={{
-				width: "100%",
-				maxWidth: 260,
-				overflow: "hidden",
-				borderRadius: 12,
-			}}
+			className="pdf-card"
 		>
+			<div className="pdf-actions">
+				<button
+					onClick={() => window.open(urlToPdf, "_blank")}
+				>⛶</button>
+			</div>
 			<Document file={urlToPdf}>
-				<Page pageNumber={1} width={pageWidth} />
+				<Page
+					pageNumber={1}
+					width={240}
+					onLoadSuccess={(page) => {
+						const viewport = page.getViewport({ scale: 1 })
+						console.log(viewport.width, viewport.height)
+					}}
+				/>
 			</Document>
 		</div>
   );

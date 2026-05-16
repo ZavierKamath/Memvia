@@ -26,6 +26,7 @@ h2 {
 }
 
 .screens-container {
+	width: 95vw;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -34,18 +35,15 @@ h2 {
 }
 
 .screen-container {
-	width: auto;
 	height: 70vh;
 	overflow: auto;
 	border: 1px solid white;
 	padding: 8px;
 	position: relative;
-	min-width: 70%;
-	max-width: 70%;
+	flex: 7;
 }
 
 .resume-screen-container {
-	width: 40vw;
 	height: 70vh;
 	overflow: auto;
 	border: 1px solid white;
@@ -54,6 +52,7 @@ h2 {
 	flex-direction: column;
 	gap: 4px;
 	position: relative;
+	flex: 3;
 }
 
 .tab-switcher-container {
@@ -179,4 +178,44 @@ h2 {
 	top: 12px;
 	right: 12px;
 	z-index: 10;
+}
+
+.sendbar {
+	display: flex;
+	flex-direction: row;
+	gap: 16px;
+}
+
+.pdf-card {
+	width: 240px;
+	max-width: 100%;
+	overflow: hidden;
+	border-radius: 12px;
+	flex: none;
+	position: relative;
+}
+
+.pdf-actions {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 5;
+	display: flex;
+	gap: 6px;
+}
+
+.pdf-actions button,
+.pdf-actions a {
+	font-size: 12px;
+	padding: 4px 6px;
+	border-radius: 6px;
+	background: rgba(0, 0, 0, 0.7);
+	color: white;
+	text-decoration: none;
+}
+
+.pdf-card canvas {
+	display: block;
+	width: 100% !important;
+	height: auto !important;
 }

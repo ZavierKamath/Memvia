@@ -4,7 +4,7 @@ import { useChat } from '../../hooks/useChat.tsx';
 import type { ChatMessageType } from '../../context/ChatContext.tsx';
 import { Screen, ResumeScreen } from './Screens.tsx';
 
-export default function Chat() {
+export function Chat() {
 	const chatContext = useChat();
 	const [inputText, setInputText] = useState("");
 
@@ -57,7 +57,9 @@ export default function Chat() {
 			)
 		} else {
 			return (
+				<div className="screens-container">	
 					<Screen />	
+				</div>	
 			)
 		}
 	}

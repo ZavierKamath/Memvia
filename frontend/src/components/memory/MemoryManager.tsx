@@ -16,7 +16,6 @@ export function MemoryManager() {
 
 	return (
 		<div className="memory-manager">
-			<h1>Memories</h1>
 			<h2>Add Memory</h2>
 			<AddMemoryForm
 				initKind="other"
