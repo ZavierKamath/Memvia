@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react'
 import { useChat } from '../../hooks/useChat.tsx';
 import type { ChatItemType } from '../../context/ChatContext.tsx'
 import { ToolMessage, ChatMessage } from './MessageCards.tsx'
@@ -6,6 +7,14 @@ import { PDFCard } from './PDFCard.tsx';
 export function ResumeScreen() {
 	const chatContext = useChat();
 	const resumeChat = chatContext.resumeBotChat
+	const resumeScreenRef = useRef<HTMLDivElement | null>(null)
+
+	useEffect(() => {
+		resumeScreenRef.current?.scrollTo({
+			top: resumeScreenRef.current.scrollHeight,
+			behavior: "smooth",
+		})
+	}, [chatContext.resumeBotChat])
 
 	function conditionalMessageRender(message: ChatItemType) {
 		if ("toolName" in message) {
@@ -24,7 +33,7 @@ export function ResumeScreen() {
 	}
 
 	return (
-		<div className="resume-screen-container">
+		<div ref={resumeScreenRef} className="resume-screen-container">
 			<h2>ResumeBot</h2>
 			<button onClick={() => chatContext.setResumeBotView(false)} className="floating-close-resume-chat">X</button>
 			<div className="resume-screen-messages">
@@ -40,6 +49,14 @@ export function ResumeScreen() {
 export function Screen() {
 	const chatContext = useChat();
 	const chat = chatContext.chat;
+	const screenRef = useRef<HTMLDivElement | null>(null)
+
+	useEffect(() => {
+		screenRef.current?.scrollTo({
+			top: screenRef.current.scrollHeight,
+			behavior: "smooth",
+		})
+	}, [chatContext.chat])
 
 	function conditionalMessageRender(message: ChatItemType) {
 		if ("toolName" in message) {
@@ -59,7 +76,7 @@ export function Screen() {
 	}
 
 	return (
-		<div className="screen-container">
+		<div ref={screenRef} className="screen-container">
 			<h2>MemBot</h2>
 			<div className="screen-content">
 				{showArrow()}

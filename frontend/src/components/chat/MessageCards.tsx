@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import type { ChatMessageType, ToolMessageType } from '../../context/ChatContext.tsx'
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
 
 export function ToolMessage({ message, agent }: { message: ToolMessageType, agent: "membot" | "resumebot" }) {
 	const [expanded, setExpanded] = useState(false)
@@ -18,26 +20,41 @@ export function ToolMessage({ message, agent }: { message: ToolMessageType, agen
 		if (expanded) {
 			return (
 				<div className="tool-expanded">
-					<div className="tool-message-part tool-name">{toolName}</div>
-					<div className="tool-message-part tool-inputs">{JSON.stringify(inputs)}</div>
-					<div className="tool-message-part tool-outputs">{JSON.stringify(outputs)}</div>
+					<div className="tool-message-part tool-inputs">
+						<pre>
+							<code>{JSON.stringify(inputs, null, 2)}</code>
+						</pre>
+					</div>
+					<div className="tool-message-part tool-outputs">
+						<pre>
+							<code>{JSON.stringify(outputs, null, 2)}</code>
+						</pre>
+					</div>
 				</div>
 			)
 		}
-		return <div className="tool-message-part tool-name">{toolName}</div>
+		return 
 	}
 
 	function upOrDown() {
 		return expanded ? "^" : "⌄"
 	}
 
-	const toolContainerClasses: string = `tool-message ${agent}`
+	const toolContainerClasses: string = `tool-message ${agent} ${expanded ? "expanded" : "collapsed"}`
 
 	return (
 		<div className={toolContainerClasses}>
-			<p>Tool Use:</p>
-			{conditionalExpandedRender()}
-			<button onClick={() => toggleExpanded()}>{upOrDown()}</button>
+			<div className="collapsed-content">
+				<p>Tool Use:</p>
+				<div className="tool-message-part tool-name">{toolName}</div>
+				<button
+					className="expansion-button"
+					onClick={() => toggleExpanded()}
+				>{upOrDown()}</button>
+			</div>
+			<div className="expanded-content">
+				{conditionalExpandedRender()}
+			</div>
 		</div>
 	)
 }

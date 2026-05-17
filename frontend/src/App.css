@@ -4,6 +4,7 @@ header {
 	align-items: center;
 	justify-content: center;
 	gap: 16px;
+	margin: 0;
 }
 
 h1 {
@@ -26,6 +27,7 @@ h2 {
 }
 
 .screens-container {
+	margin: 0 auto;
 	width: 95vw;
 	display: flex;
 	flex-direction: row;
@@ -64,6 +66,14 @@ h2 {
 	gap: 16px;
 }
 
+.tab-switcher-container button {
+	border-radius: 0px;
+	padding: 9px 20px 20px 20px;
+	width: max(8vw, 44px);
+	height: max(4vh, 38px);
+	margin: 0;
+}
+
 .user-message {
 	color: white;
 	text-align: right;
@@ -84,15 +94,71 @@ h2 {
 
 .tool-message {
 	display: flex;
-	flex-direction: row;
-	gap: 8px;
-	width: 18vw;
+	flex-direction: column;
+	gap: 2px;
 	font-size: 13px;
 }
 
-.tool-message > button {
-	font-size: 10;
-	padding: 1px;
+.tool-message.expanded {
+	align-items: flex-start;
+}
+
+.collapsed-content {
+	display: flex;
+	flex-direction: row;
+	gap: 6px;
+	align-items: center;
+}
+
+.expanded-content {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	align-items: center;
+}
+
+.tool-message code {
+	max-width: 30vw;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	word-break: break-word;
+	text-align: left;
+	font-size: 10px;
+	display: block;
+}
+
+.tool-expanded {
+	gap: 4px;
+}
+
+.tool-message pre {
+	margin: 0;
+}
+
+.chatbar {
+	width: min(35vw, 760px);
+	min-height: 42px;
+	max-height: 110px;
+	resize: none;
+	overflow-y: auto;
+	border-radius: 0px;
+	padding: 10px 40px 12px 16px;
+	box-sizing: border-box;
+}
+
+.sendbar button {
+	border-radius: 0px;
+	padding: 9px 20px 20px 20px;
+	width: max(8vw, 44px);
+	height: max(4vh, 38px);
+}
+
+.tool-message button {
+	font-size: 10px;
+	padding: 0px 3px;
+	height: 18px;
+	line-height: 1;
+	border-radius: 0;
 }
 
 .tool-expanded {
@@ -129,7 +195,7 @@ h2 {
 	text-align: left;
 }
 
-.tool-message.membot > .tool-message-part.tool-name {
+.tool-message.membot .tool-message-part.tool-name {
 	color: gray;
 }
 
@@ -159,10 +225,11 @@ h2 {
 }
 
 .tool-message.resumebot {
+	text-align: left;
 	color: cyan;
 }
 
-.tool-message.resumebot > .tool-message-part.tool-name {
+.tool-message.resumebot .tool-message-part.tool-name {
 	color: #77BFBF;
 }
 

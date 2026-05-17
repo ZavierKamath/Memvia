@@ -9,9 +9,6 @@ function App() {
 	return (
 		<>
 			<header>
-				<h1>
-					{tabContext.tab === "chat" ? "Chat" : "Memory Manager"}
-				</h1>
 				<TabSwitcher />
 			</header>
 			{tabContext.tab === "chat" ? <Chat /> : <MemoryManager />}
