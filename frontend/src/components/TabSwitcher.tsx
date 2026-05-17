@@ -1,4 +1,5 @@
 import { useTab } from '../hooks/useTab.tsx'
+import './TabSwitcher.css'
 
 function TabSwitcher() {
 	const tabContext = useTab();

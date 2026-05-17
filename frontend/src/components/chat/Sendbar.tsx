@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { invokeJob } from '../../api/jobs.ts';
 import { useChat } from '../../hooks/useChat.tsx';
 import type { ChatMessageType } from '../../context/ChatContext.tsx';
+import './Sendbar.css'
 
 function Chatbar(
 	{ inputText, setInputText, handleSend }:
@@ -89,7 +90,7 @@ export function Sendbar() {
 			<button
 				onClick={handleSend}
 			>
-				Send
+				➤
 			</button>
 		</div>
 	)

@@ -3,6 +3,7 @@ import { useChat } from '../../hooks/useChat.tsx';
 import type { ChatItemType } from '../../context/ChatContext.tsx'
 import { ToolMessage, ChatMessage } from './MessageCards.tsx'
 import { PDFCard } from './PDFCard.tsx';
+import './Screens.css'
 
 export function ResumeScreen() {
 	const chatContext = useChat();

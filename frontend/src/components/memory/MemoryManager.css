@@ -1,0 +1,18 @@
+.memory-card-container {
+	border: 1px solid white;
+	padding: 8px;
+	margin: 8px;
+	width: 50%;
+}
+
+.memory-card-library {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	justify-content: center;
+	align-items: center;
+}
+
+.memory-manager > h2 {
+	margin: 16px;
+}

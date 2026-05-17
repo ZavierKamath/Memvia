@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { ChatMessageType, ToolMessageType } from '../../context/ChatContext.tsx'
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import './MessageCards.css'
 
 export function ToolMessage({ message, agent }: { message: ToolMessageType, agent: "membot" | "resumebot" }) {
 	const [expanded, setExpanded] = useState(false)
