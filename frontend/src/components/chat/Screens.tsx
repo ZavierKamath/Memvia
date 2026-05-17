@@ -33,15 +33,19 @@ export function ResumeScreen() {
 	}
 
 	return (
-		<div ref={resumeScreenRef} className="resume-screen-container">
-			<h2>ResumeBot</h2>
-			<button onClick={() => chatContext.setResumeBotView(false)} className="floating-close-resume-chat">X</button>
-			<div className="resume-screen-messages">
-				{resumeChat.map((message: ChatItemType) => (
-					conditionalMessageRender(message)
-				))}
+		<div className="resume-screen-and-header">
+			<div className="resume-screen-header">
+				<h2>ResumeBot</h2>
+				<button onClick={() => chatContext.setResumeBotView(false)} className="floating-close-resume-chat">X</button>
 			</div>
-			{conditionalPdfRender()}
+			<div ref={resumeScreenRef} className="resume-screen-container">
+				<div className="resume-screen-messages">
+					{resumeChat.map((message: ChatItemType) => (
+						conditionalMessageRender(message)
+					))}
+				</div>
+				{conditionalPdfRender()}
+			</div>
 		</div>
 	)
 }
@@ -76,13 +80,17 @@ export function Screen() {
 	}
 
 	return (
-		<div ref={screenRef} className="screen-container">
-			<h2>MemBot</h2>
-			<div className="screen-content">
+		<div className='screen-and-header'>
+			<div className="screen-header">
+				<h2>MemBot</h2>
 				{showArrow()}
-				{chat.map((message: ChatItemType) => (
-					conditionalMessageRender(message)
-				))}
+			</div>
+			<div ref={screenRef} className="screen-container">
+				<div className="screen-content">
+					{chat.map((message: ChatItemType) => (
+						conditionalMessageRender(message)
+					))}
+				</div>
 			</div>
 		</div>
 	)

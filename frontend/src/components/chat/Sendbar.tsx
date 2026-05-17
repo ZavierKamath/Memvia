@@ -18,7 +18,7 @@ function Chatbar(
 		if (!el) return
 
 		el.style.height = "auto"
-		el.style.height = `${Math.min(el.scrollHeight,110)}px`
+		el.style.height = `${Math.min(el.scrollHeight,75)}px`
 	}
 
 

@@ -23,7 +23,7 @@ h2 {
 	align-items: center;
 	justify-content: center;
 	gap: 16px;
-	padding: 32px;
+	padding: 4px 32px;
 }
 
 .screens-container {
@@ -36,25 +36,64 @@ h2 {
 	gap: 16px;
 }
 
-.screen-container {
-	height: 70vh;
-	overflow: auto;
+.screen-and-header {
+	padding: 8px 0px;
 	border: 1px solid white;
-	padding: 8px;
 	position: relative;
 	flex: 7;
 }
 
-.resume-screen-container {
-	height: 70vh;
+.screen-container {
+	height: 75vh;
 	overflow: auto;
-	border: 1px solid white;
 	padding: 8px;
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
+	position: relative;
+}
+
+.screen-header {
+	position: relative;
+	padding: 0px 0px 4px 0px;
+	border-bottom: 1px solid white;
+}
+
+.resume-screen-and-header {
+	padding: 8px 0px;
+	border: 1px solid white;
 	position: relative;
 	flex: 3;
+}
+
+.resume-screen-container {
+	height: 75vh;
+	overflow: auto;
+	padding: 8px;
+	position: relative;
+}
+
+.resume-screen-header {
+	position: relative;
+	padding: 0px 0px 4px 0px;
+	border-bottom: 1px solid white
+}
+
+.resume-screen-header button {
+	position: absolute;
+	top: 3px;
+	right: 10px;
+}
+
+.screen-header button {
+	position: absolute;
+	top: 3px;
+	right: 10px;
+}
+
+.screens-container button {
+	font-size: 10px;
+	padding: 3px 7px;
+	height: 18px;
+	line-height: 1;
+	border-radius: 0;
 }
 
 .tab-switcher-container {
@@ -138,7 +177,7 @@ h2 {
 .chatbar {
 	width: min(35vw, 760px);
 	min-height: 42px;
-	max-height: 110px;
+	max-height: 75px;
 	resize: none;
 	overflow-y: auto;
 	border-radius: 0px;
@@ -148,9 +187,9 @@ h2 {
 
 .sendbar button {
 	border-radius: 0px;
-	padding: 9px 20px 20px 20px;
+	padding: 10px 20px 20px 20px;
 	width: max(8vw, 44px);
-	height: max(4vh, 38px);
+	height: max(4vh, 42px);
 }
 
 .tool-message button {
