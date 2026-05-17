@@ -1,4 +1,5 @@
 import { useTab } from '../hooks/useTab.tsx'
+import './TabSwitcher.css'
 
 function TabSwitcher() {
 	const tabContext = useTab();
@@ -12,7 +13,7 @@ function TabSwitcher() {
 			<button
 				disabled={tabContext.tab === 'memories' ? true : false}
 				onClick={tabContext.switchTab}
-			>Memory Manager</button>
+			>Memories</button>
 		</div>
 	)
 }

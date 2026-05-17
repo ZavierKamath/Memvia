@@ -1,0 +1,83 @@
+.screens-container {
+	margin: 0 auto;
+	width: 95vw;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+}
+
+.screen-and-header {
+	padding: 8px 0px;
+	border: 1px solid white;
+	position: relative;
+	flex: 7;
+}
+
+.screen-container {
+	height: 75vh;
+	overflow: auto;
+	padding: 8px;
+	position: relative;
+}
+
+.screen-header {
+	position: relative;
+	padding: 0px 0px 4px 0px;
+	border-bottom: 1px solid white;
+}
+
+.resume-screen-and-header {
+	padding: 8px 0px;
+	border: 1px solid white;
+	position: relative;
+	flex: 3;
+}
+
+.resume-screen-container {
+	height: 75vh;
+	overflow: auto;
+	padding: 8px;
+	position: relative;
+}
+
+.resume-screen-header {
+	position: relative;
+	padding: 0px 0px 4px 0px;
+	border-bottom: 1px solid white
+}
+
+.resume-screen-header button {
+	position: absolute;
+	top: 3px;
+	right: 10px;
+}
+
+.screen-header button {
+	position: absolute;
+	top: 3px;
+	right: 10px;
+}
+
+.screens-container button {
+	font-size: 10px;
+	padding: 3px 7px;
+	height: 18px;
+	line-height: 1;
+	border-radius: 0;
+}
+
+.floating-close-resume-chat {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 10;
+}
+
+.floating-open-resume-chat {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 10;
+}

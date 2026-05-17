@@ -15,7 +15,7 @@ async def kb_search(mem_service, job_service, query: str, k: int):
 
     result = "# KB Search Results\n\n"
     for i, row in enumerate(rows):
-        result += f"## Result {i}\n"
+        result += f"## Result {i + 1}\n"
         result += f"**Memory Title: {row['title']}**\n"
         result += f"_Memory Kind: {row['kind']}_\n"
         result += f"Memory Content: \n\n{row['content']}\n\n"

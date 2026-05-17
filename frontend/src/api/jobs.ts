@@ -5,7 +5,10 @@ export function createEventListenersForJob(
 	messageNumber: number,
 	setSessionId: (sessionId: string) => void,
 	addMessage: (message: ChatMessageType) => void,
-	addToolMessage: (toolMessage: ToolMessageType) => void
+	addToolMessage: (toolMessage: ToolMessageType) => void,
+	setResumeBotView: (value: boolean) => void,
+	addResumeBotToolMessage: (toolMessage: ToolMessageType) => void,
+	setResumePDFPath: (pdfPath: string) => void
 ) {
 	if (jobId === 'START') {
 		return 
@@ -46,6 +49,29 @@ export function createEventListenersForJob(
 			outputs: data.outputs
 		}
 		addToolMessage(toolMessage)
+	})
+
+	es.addEventListener("start_resumebot", (event) => {
+		const data = JSON.parse(event.data)
+		console.log(`start_resumebot data: ${JSON.stringify(data)}`)
+		setResumeBotView(true)
+	})
+
+	es.addEventListener("resumebot_tool_result", (event) => {
+		const data = JSON.parse(event.data)
+		console.log(`resumebot_tool_result data: ${JSON.stringify(data)}`)
+		const toolMessage: ToolMessageType = {
+			toolName: data.tool_name,
+			inputs: data.inputs,
+			outputs: data.outputs
+		}
+		addResumeBotToolMessage(toolMessage)
+	})
+
+	es.addEventListener("end_resumebot", (event) => {
+		const data = JSON.parse(event.data)
+		console.log(`end_resumebot data: ${JSON.stringify(data)}`)
+		setResumePDFPath(data.outputs.output_path)
 	})
 
 	es.addEventListener("agent", (event) => {

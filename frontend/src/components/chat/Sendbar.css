@@ -1,0 +1,23 @@
+.chatbar {
+	width: min(35vw, 760px);
+	min-height: 42px;
+	max-height: 75px;
+	resize: none;
+	overflow-y: auto;
+	border-radius: 0px;
+	padding: 10px 40px 12px 16px;
+	box-sizing: border-box;
+}
+
+.sendbar button {
+	border-radius: 0px;
+	padding: 10px 20px 20px 22px;
+	width: max(4vw, 20px);
+	height: max(4vh, 42px);
+}
+
+.sendbar {
+	display: flex;
+	flex-direction: row;
+	gap: 16px;
+}

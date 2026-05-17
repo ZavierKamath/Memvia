@@ -3,9 +3,10 @@ from uuid import uuid4
 import json
 from contextlib import asynccontextmanager
 from typing import List
+from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
@@ -30,6 +31,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/documents/{doc_string:path}")
+async def get_document(doc_string):
+    print("Fetching document")
+    doc_path = Path(doc_string)
+    return FileResponse(
+        path=doc_path,
+        media_type="application/pdf",
+        filename="resume.pdf"
+    )
 
 @app.get("/memories")
 async def get_memories():

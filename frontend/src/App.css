@@ -1,57 +1,33 @@
-h1 {
-	font-size: 28px;
-}
-
-h2 {
-	font-size: 16px;
-}
-
-.tab-switcher-container {
+header {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	margin: 8px;
+	gap: 16px;
+	margin: 0;
 }
 
-.user-message {
-	color: white;
-	text-align: right;
-	border: 1px solid white;
-	padding: 8px;
-	margin: 8px 8px 8px auto;
-	width: 65%;
+h1 {
+	font-size: 28px;
+	margin: 0;
 }
 
-.ai-message {
-	color: lime;
-	text-align: left;
-	border: 1px solid lime;
-	padding: 8px;
-	margin: 8px;
-	width: 65%;
+h2 {
+	font-size: 16px;
+	margin: 0;
 }
 
-.tool-message {
-	color: gray;
-	text-align: left;
-}
-
-.memory-card-container {
-	border: 1px solid white;
-	padding: 8px;
-	margin: 8px;
-	width: 50%;
-}
-
-.memory-card-library {
+.chat-screen {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	padding: 4px 32px;
 }
 
-.memory-manager > h2 {
-	margin: 16px;
+.chat-screen > div > input {
+	width: 50vw;
+	height: 5vh;
+	font-size: 16px;
 }

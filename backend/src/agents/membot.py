@@ -11,7 +11,8 @@ class MemBot(PipedAgent):
 
         async def spawn_resumebot_tool(instructions: str):
             "Spawns ResumeBot with the instructions that are given. ResumeBot will work and return a result in natual language."
-            await spawn_resumebot_prewrap(job_service, instructions)
+            result = await spawn_resumebot_prewrap(job_service, instructions)
+            return result.output
 
         spawn_resumebot = Tool(
             spawn_resumebot_tool,
