@@ -2,8 +2,8 @@
 	color: white;
 	text-align: right;
 	border: 1px solid white;
-	padding: 8px;
-	margin: 8px 8px 8px auto;
+	padding: 0.5rem;
+	margin: 0.5rem 0.5rem 0.5rem auto;
 	max-width: 55%;
 }
 
@@ -11,15 +11,15 @@
 	color: lime;
 	text-align: left;
 	border: 1px solid lime;
-	padding: 8px;
-	margin: 8px;
+	padding: 0.5rem;
+	margin: 0.5rem;
 	max-width: 55%;
 }
 
 .tool-message {
 	display: flex;
 	flex-direction: column;
-	gap: 2px;
+	gap: 0.125rem;
 	font-size: 13px;
 }
 
