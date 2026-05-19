@@ -17,25 +17,29 @@ export function MemoryManager() {
 
 	return (
 		<div className="memory-manager">
-			<h2>Add Memory</h2>
-			<AddMemoryForm
-				initKind="other"
-				initMemId={crypto.randomUUID().toString()}
-				initTitle="Title"
-				initContent="Content"
-				isEdit={false}
-				setEditing={null}
-			/>
-			<h2>View Memories</h2>
-			<div className="memory-card-library">
-				{memoryContext.memories.map((memory) => (
-					<MemoryCard
-						key={memory.mem_id}
-						memory={memory}
-						deleteMemoryFunction={memoryContext.deleteMemoryCTX}
-						addMemoryFunction={memoryContext.addMemoryCTX}
-					/>
-				))}
+			<div className="memory-manager-form-section">
+				<h2>Add Memory</h2>
+				<AddMemoryForm
+					initKind="experience"
+					initMemId={crypto.randomUUID().toString()}
+					initTitle=""
+					initContent=""
+					isEdit={false}
+					setEditing={null}
+				/>
+			</div>
+			<div className="memory-manager-card-library-section">
+				<h2>View Memories</h2>
+				<div className="memory-card-library">
+					{memoryContext.memories.map((memory) => (
+						<MemoryCard
+							key={memory.mem_id}
+							memory={memory}
+							deleteMemoryFunction={memoryContext.deleteMemoryCTX}
+							addMemoryFunction={memoryContext.addMemoryCTX}
+						/>
+					))}
+				</div>
 			</div>
 		</div>
 	)

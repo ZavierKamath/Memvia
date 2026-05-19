@@ -37,7 +37,7 @@ export function ResumeScreen() {
 		<div className="resume-screen-and-header">
 			<div className="resume-screen-header">
 				<h2>ResumeBot</h2>
-				<button onClick={() => chatContext.setResumeBotView(false)} className="floating-close-resume-chat">X</button>
+				<button onClick={() => chatContext.setResumeBotView(false)} className="screen-header-button floating-close-resume-chat">X</button>
 			</div>
 			<div ref={resumeScreenRef} className="resume-screen-container">
 				<div className="resume-screen-messages">
@@ -75,7 +75,7 @@ export function Screen() {
 		if (chatContext.resumeBotView) {
 			return	
 		} else {
-			return <button onClick={() => chatContext.setResumeBotView(true)} className="floating-open-resume-chat">→</button>
+			return <button onClick={() => chatContext.setResumeBotView(true)} className="screen-header-button floating-open-resume-chat">→</button>
 		}
 	
 	}
