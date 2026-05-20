@@ -8,7 +8,8 @@ export function createEventListenersForJob(
 	addToolMessage: (toolMessage: ToolMessageType) => void,
 	setResumeBotView: (value: boolean) => void,
 	addResumeBotToolMessage: (toolMessage: ToolMessageType) => void,
-	setResumePDFPath: (pdfPath: string) => void
+	setResumePDFPath: (pdfPath: string) => void,
+	addCopyboxElement: (copyableText: string) => void
 ) {
 	if (jobId === 'START') {
 		return 
@@ -49,6 +50,13 @@ export function createEventListenersForJob(
 			outputs: data.outputs
 		}
 		addToolMessage(toolMessage)
+	})
+
+	es.addEventListener("publish_copybox", (event) => {
+		const data = JSON.parse(event.data)
+		console.log(`tool_result data: ${JSON.stringify(data)}`)
+		const copyableText = data.copyable_text
+		addCopyboxElement(copyableText)
 	})
 
 	es.addEventListener("start_resumebot", (event) => {

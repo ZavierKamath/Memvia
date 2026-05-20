@@ -12,5 +12,14 @@
 	padding: 9px 20px 20px 20px;
 	width: max(8vw, 44px);
 	height: max(4vh, 38px);
+	opacity: 0.75;
 	margin: 0;
+	cursor: pointer;
+}
+
+.tab-switcher-container button.active {
+	opacity: 1;
+	font-weight: 700;
+	border-bottom: 3px solid currentColor;
+	cursor: default;
 }

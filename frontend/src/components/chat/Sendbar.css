@@ -10,6 +10,7 @@
 }
 
 .sendbar button {
+	cursor: pointer;
 	border-radius: 0px;
 	padding: 10px 20px 20px 22px;
 	width: max(4vw, 20px);

@@ -20,7 +20,7 @@
 }
 
 .screen-container {
-	height: 75vh;
+	height: 72vh;
 	overflow: auto;
 	padding: 8px;
 	position: relative;
@@ -40,7 +40,7 @@
 }
 
 .resume-screen-container {
-	height: 75vh;
+	height: 72vh;
 	overflow: auto;
 	padding: 8px;
 	position: relative;
@@ -53,18 +53,20 @@
 }
 
 .resume-screen-header button {
+	cursor: pointer;
 	position: absolute;
 	top: 3px;
 	right: 10px;
 }
 
 .screen-header button {
+	cursor: pointer;
 	position: absolute;
 	top: 3px;
 	right: 10px;
 }
 
-.screens-container.screen-header-button {
+.screen-header-button {
 	font-size: 15px;
 	padding: 3px 7px;
 	height: 32px;

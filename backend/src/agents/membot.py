@@ -5,6 +5,7 @@ from src.prompts import MEMBOT_SYSTEM_PROMPT
 from src.tools.spawn_resumebot import spawn_resumebot_prewrap
 from src.tools.kb_search import kb_search as kb_search_prewrap
 from src.tools.web_search import web_search_prewrap
+from src.tools.publish_copybox import publish_copybox_prewrap
 
 class MemBot(PipedAgent):
     def __init__(self, job_id, job_service, mem_service):
@@ -52,6 +53,21 @@ class MemBot(PipedAgent):
             description="Returns search results from the internet based on the provided query and max_results.",
         )
 
+        async def publish_copybox_tool(copyable_text: str):
+            """
+            Tool for publishing some text to the copybox
+
+            Args:
+                copyable_text -- the text to publish to the copybox
+            """
+            return await publish_copybox_prewrap(job_service, copyable_text)
+
+        publish_copybox = Tool(
+            publish_copybox_tool,
+            name="publish_copybox",
+            description="Publishes some text to the copybox for the user",
+        )
+
         super().__init__(
             agent_name="membot",
             description="Primary Chatbot for Memvia: a service that gives a user the ability to manage and chat with memories, particularly in the realm of maintaining knowledge of their professional life for the sake of job hunting applicatons.",
@@ -61,6 +77,7 @@ class MemBot(PipedAgent):
                 web_search,
                 kb_search,
                 spawn_resumebot,
+                publish_copybox,
             ],
         )
 

@@ -17,6 +17,10 @@ h2 {
 	margin: 0;
 }
 
+.app {
+	position: relative;
+}
+
 .chat-screen {
 	display: flex;
 	flex-direction: column;
