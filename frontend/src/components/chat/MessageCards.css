@@ -1,25 +1,27 @@
 .user-message {
 	color: white;
 	text-align: right;
+	font-size: 1rem;
 	border: 1px solid white;
-	padding: 8px;
-	margin: 8px 8px 8px auto;
+	padding: 0.5rem;
+	margin: 0.5rem 0.5rem 0.5rem auto;
 	max-width: 55%;
 }
 
 .ai-message {
 	color: lime;
 	text-align: left;
+	font-size: 1rem;
 	border: 1px solid lime;
-	padding: 8px;
-	margin: 8px;
+	padding: 0.5rem;
+	margin: 0.5rem;
 	max-width: 55%;
 }
 
 .tool-message {
 	display: flex;
 	flex-direction: column;
-	gap: 2px;
+	gap: 0.125rem;
 	font-size: 13px;
 }
 
@@ -63,6 +65,7 @@
 	font-size: 10px;
 	padding: 0px 3px;
 	height: 18px;
+	width: 18px;
 	line-height: 1;
 	border-radius: 0;
 }
@@ -74,26 +77,34 @@
 
 .user-message > .chat-message-part.sender {
 	color: #BDBDBD;
+	font-size: 0.85rem;
+	font-weight: 700;
 }
 
 .user-message > .chat-message-part.content {
 	color: white;
+	font-weight: 300;
 }
 
 .user-message > .chat-message-part.timestamp {
 	color: #BDBDBD;
+	font-size: 0.85rem;
 }
 
 .ai-message > .chat-message-part.sender {
 	color: #BDBDBD;
+	font-size: 0.85rem;
+	font-weight: 700;
 }
 
 .ai-message > .chat-message-part.content {
 	color: white;
+	font-weight: 300;
 }
 
 .ai-message > .chat-message-part.timestamp {
 	color: #BDBDBD;
+	font-size: 0.85rem;
 }
 
 .tool-message.membot {

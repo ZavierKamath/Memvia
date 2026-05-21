@@ -17,7 +17,8 @@ export function Chat() {
 			chatContext.addToolMessage,
 			chatContext.setResumeBotView,
 			chatContext.addResumeBotToolMessage,
-			chatContext.setResumePDFPath
+			chatContext.setResumePDFPath,
+			chatContext.addCopyboxElement
 		)
 	}, [chatContext.sessionId, chatContext.messageNumber]);
 

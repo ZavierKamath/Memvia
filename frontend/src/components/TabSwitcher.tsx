@@ -7,11 +7,11 @@ function TabSwitcher() {
 	return (
 		<div className='tab-switcher-container'>
 			<button
-				disabled={tabContext.tab === 'chat' ? true : false}
+				className={tabContext.tab === 'chat' ? 'active' : ''}
 				onClick={tabContext.switchTab}
 			>Chat</button>
 			<button
-				disabled={tabContext.tab === 'memories' ? true : false}
+				className={tabContext.tab === 'memories' ? 'active' : ''}
 				onClick={tabContext.switchTab}
 			>Memories</button>
 		</div>

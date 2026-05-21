@@ -16,25 +16,34 @@ export function MemoryCard(
 		setEditing(editing ? false : true)
 	}
 
+	function conditionalMemoryContent() {
+		const contentCutoff: number = 380;
+		if (memory.content.length > contentCutoff - 3) {
+			return <p>{memory.content.slice(0, contentCutoff)}...</p>
+		} else {
+			return <p>{memory.content}</p>
+		}
+	}
+
 	function conditionalRenderEditMode() {
 		if (!editing) {
 			return (
 				<>
+					<h4>{memory.kind}</h4>
+					<div className="button-area">
+						<button
+							className="edit-button"
+							onClick={() => toggleEditing()}
+						>edit</button>
+						<button
+							className="delete-button"
+							onClick={() => deleteMemoryFunction(memory.mem_id)}
+						>delete</button>
+					</div>
 					<header>
 						<h3>{memory.title}</h3>
-						<div className="button-area">
-							<button
-								className="edit-button"
-								onClick={() => toggleEditing()}
-							>edit</button>
-							<button
-								className="delete-button"
-								onClick={() => deleteMemoryFunction(memory.mem_id)}
-			                >delete</button>
-						</div>
 					</header>
-					<h4>{memory.kind}</h4>
-					<p>{memory.content}</p>
+					{conditionalMemoryContent()}
 				</>
 			)
 		} else {

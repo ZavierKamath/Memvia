@@ -14,6 +14,11 @@ export type ChatMessageType = {
 	sentTimestamp: string,
 }
 
+export type CopyableTextType = {
+	copyableText: string
+	order: number
+}
+
 export type ChatItemType = ChatMessageType | ToolMessageType;
 
 type ChatContextType = {
@@ -24,6 +29,7 @@ type ChatContextType = {
 	resumePdfPath: string;
 	messageNumber: number;
 	resumeBotMessageNumber: number;
+	copybox: CopyableTextType[];
 	addMessage: (message: ChatMessageType) => void;
 	setSessionId: (sessionId: string) => void;
 	setMessageNumber: (messageNumber: number) => void;
@@ -32,6 +38,7 @@ type ChatContextType = {
 	setResumeBotView: (value: boolean) => void;
 	addResumeBotToolMessage: (toolMessage: ToolMessageType) => void;
 	setResumePDFPath: (pdfPath: string) => void;
+	addCopyboxElement: (copyableTextValue: string) => void;
 }
 
 export const ChatContext = createContext<ChatContextType | null>(null)
@@ -44,6 +51,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 	const [resumeBotMessageNumber, setResumeBotChatMessageNumber] = useState(0);
 	const [sessionId, setChatSessionId] = useState("START");
 	const [messageNumber, setChatMessageNumber] = useState(0);
+	const [copybox, setCopybox] = useState<CopyableTextType[]>([]);
 
 	function addMessage(message: ChatMessageType) {
 		setChat((current) => ([...current, message]));
@@ -77,6 +85,21 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 		setResumeBotChatView(value)
 	}
 
+	function addCopyboxElement(copyableTextValue: string) {
+		if (copybox.length !== 0) {
+			setCopybox((current) => {
+				const nextOrder = current.length === 0 ? 0 : current[current.length - 1].order + 1
+				return [...current, { copyableText: copyableTextValue, order: nextOrder }]
+			})
+		} else {
+			const newCopyboxElement: CopyableTextType = {
+				copyableText: copyableTextValue,
+				order: 0
+			}
+			setCopybox((current) => ([newCopyboxElement]))
+		}
+	}
+
 	return (
 		<ChatContext.Provider value={{
 			chat,
@@ -86,6 +109,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 			resumePdfPath,
 			messageNumber,
 			resumeBotMessageNumber,
+			copybox,
 			addMessage,
 			setSessionId,
 			setMessageNumber,
@@ -93,7 +117,8 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 			addToolMessage,
 			setResumeBotView,
 			addResumeBotToolMessage,
-			setResumePDFPath
+			setResumePDFPath,
+			addCopyboxElement
 		}}>
 			{children}
 		</ChatContext.Provider>
