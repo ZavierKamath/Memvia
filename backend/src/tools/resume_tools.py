@@ -35,8 +35,8 @@ async def add_experience_to_resume_prewrap(job_service, tex_service, title, date
     await job_service.publish(job_service.job_id, "resumebot_tool_result", tool_result.model_dump())
     return result
 
-async def add_education_to_resume_prewrap(job_service, tex_service, school: str, dates: Tuple[str, str], degree: str, location: str):
-    result = tex_service.resume_add_education(school, dates, degree, location)
+async def add_education_to_resume_prewrap(job_service, tex_service, school, dates, degree, location, bullets):
+    result = tex_service.resume_add_education(school, dates, degree, location, bullets)
 
     tool_result = ToolResult(
         tool_name="add_education_to_resume",
@@ -45,6 +45,7 @@ async def add_education_to_resume_prewrap(job_service, tex_service, school: str,
             "dates": dates,
             "degree": degree,
             "location": location,
+            "bullets": bullets,
         },
         outputs={"result": result}
     )
@@ -52,7 +53,7 @@ async def add_education_to_resume_prewrap(job_service, tex_service, school: str,
     await job_service.publish(job_service.job_id, "resumebot_tool_result", tool_result.model_dump())
     return result
 
-async def add_skills_to_resume_prewrap(job_service, tex_service, sections: List[SkillSection]):
+async def add_skills_to_resume_prewrap(job_service, tex_service, sections):
     result = tex_service.resume_add_skills(sections)
 
     tool_result = ToolResult(

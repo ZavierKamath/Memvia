@@ -31,7 +31,7 @@ class PipedAgent():
     """
     Base class for any agent that includes logging to openpipe under the session and agent name
     """
-    def __init__(self, agent_name: str, description: str, system_prompt: str, session: str, deps_type = None, agent_deps = None, tools = [], model_id: str = 'gemini-2.5-flash'):
+    def __init__(self, agent_name: str, description: str, system_prompt: str, session: str, deps_type = None, agent_deps = None, tools = [], model_id: str = 'openai/gpt-5.5'):
         self.name = agent_name
         self.agent_deps = agent_deps
         self.deps_type = deps_type
@@ -49,24 +49,22 @@ class PipedAgent():
 
     def create_piped_model(self):
         model = OpenAIChatModel(
-            f"openpipe:openrouter/{self.model_id}",
+            f"{self.model_id}",
             provider=OpenAIProvider(
-                base_url="https://api.openpipe.ai/api/v1",
-                api_key=os.environ["OPENPIPE_API_KEY"]
-            ),
-            settings=ModelSettings( 
-                # temperature=0.7,
-                # max_tokens=5000,
-                extra_body={
-                    "metadata": {
-                        "app": "Memvia",
-                        "agent_name": self.name,
-                        "session_id": self.session,
-                        "provider": "openrouter",
-                        "model_family": self.model_id
-                    }
-                }
+                base_url="https://openrouter.ai/api/v1",
+                api_key=os.environ["OPENROUTER_API_KEY"]
             )
+        #     settings=ModelSettings( 
+        #         extra_body={
+        #             "metadata": {
+        #                 "app": "Memvia",
+        #                 "agent_name": self.name,
+        #                 "session_id": self.session,
+        #                 "provider": "openrouter",
+        #                 "model_family": self.model_id
+        #             }
+        #         }
+        #     )
         )
 
         return model

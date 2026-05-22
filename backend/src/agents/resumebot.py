@@ -4,12 +4,13 @@ from src.agents.pipedagent import PipedAgent
 from src.prompts import RESUMEBOT_SYSTEM_PROMPT
 from src.services.tex_service import TexService
 from src.tools.resume_tools import *
+from src.models import Dates, Contact
 
 class ResumeBot(PipedAgent):
     def __init__(self, job_service):
         tex_service = TexService(job_service.job_id)
 
-        async def resume_start_tool(name: str, contacts: List[Tuple[str, str]], summary: Optional[str] = None):
+        async def resume_start_tool(name: str, contacts: List[Contact], summary: Optional[str] = None):
             """
             Tool for initializing a new resume document. 
 
@@ -26,7 +27,7 @@ class ResumeBot(PipedAgent):
             description="Starts a resume for the given person with a name with the given contact links (Tuple[str, str] where the first string is the display and the second string is the link) and high level summary that cannot be more than 1 sentence.",
         )
 
-        async def resume_add_experience_tool(title: str, dates: Tuple[str, str], role: str, location: str, bullets: List[str]):
+        async def resume_add_experience_tool(title: str, dates: Dates, role: str, location: str, bullets: List[str]):
             """
             Tool for adding an experience to the experience section of an already initialized resume
 
@@ -45,7 +46,7 @@ class ResumeBot(PipedAgent):
             description="Tool to add an experience to a resume. Make sure to only add experiences one after the other with no skills or education inbetween.",
         )
 
-        async def resume_add_education_tool(school: str, dates: Tuple[str, str], degree: str, location: str):
+        async def resume_add_education_tool(school: str, dates: Dates, degree: str, location: str, bullets: List[str]):
             """
             Tool adding an education to the education secton of an already initialized resume
 
@@ -55,7 +56,7 @@ class ResumeBot(PipedAgent):
                 degree: name of the degree
                 location: the location of the education. can be 'Remote'
             """
-            return await add_education_to_resume_prewrap(job_service, tex_service, school, dates, degree, location)
+            return await add_education_to_resume_prewrap(job_service, tex_service, school, dates, degree, location, bullets)
 
         add_education = Tool(
             resume_add_education_tool,

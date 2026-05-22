@@ -5,7 +5,7 @@ from tempfile import TemporaryDirectory
 import subprocess
 from uuid import uuid4
 
-from src.models import SkillSection
+from src.models import SkillSection, Contact, Dates
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 
@@ -17,13 +17,13 @@ class TexService():
         self.sections = set()
         self.template_path = BASE_DIR / "data" / "resume_template.cls"
 
-    def resume_start(self, name: str, contacts: List[Tuple[str, str]], summary: str):
+    def resume_start(self, name: str, contacts: List[Contact], summary: str):
         self.resume_string += "\\documentclass{resume_template}\n"
         self.resume_string += f"\\resumename{{{self._escape_tex(name)}}}\n\n"
         self.resume_string += "\\resumecontacts{\n"
 
-        for value, label in contacts:
-            self.resume_string += f"  \\contactlink{{{self._escape_tex(value)}}}{{{self._escape_tex(label)}}}\n"
+        for contact in contacts:
+            self.resume_string += f"  \\contactlink{{{self._escape_tex(contact.value)}}}{{{self._escape_tex(contact.label)}}}\n"
         self.resume_string += "}\n"
 
         self.resume_string += f"\\resumesummary{{{self._escape_tex(summary)}}}\n\n"
@@ -33,15 +33,15 @@ class TexService():
         self.sections.add("start")
         return f"Started resume with {len(contacts)} contacts for {name} with a {len(summary) if summary else 0} character summary."
 
-    def resume_add_experience(self, title: str, dates: Tuple[str, str], role: str, location: str, bullets: List[str]):
+    def resume_add_experience(self, title: str, dates: Dates, role: str, location: str, bullets: List[str]):
         if not "start" in self.sections:
             return "Must start the resume before making an Experience section"
 
         if not "experience" in self.sections:
             self.resume_string += "\\section{Experience}\n"
 
-        date_start = dates[0]
-        date_end = dates[1]
+        date_start = dates.start_date
+        date_end = dates.end_date
 
         title, date_start, date_end, role, location = self._escape_tex(title), self._escape_tex(date_start), self._escape_tex(date_end), self._escape_tex(role), self._escape_tex(location) 
 
@@ -56,19 +56,25 @@ class TexService():
         self.sections.add("experience")
         return f"Started resume with {len(bullets)} bullets for {role} at {title}."
 
-    def resume_add_education(self, school: str, dates: Tuple[str, str], degree: str, location: str):
+    def resume_add_education(self, school: str, dates: Dates, degree: str, location: str, bullets: List[str]):
         if not "start" in self.sections:
             return "Must start the resume before making an Education section"
 
         if not "education" in self.sections:
             self.resume_string += "\\section{Education}\n"
 
-        date_start = dates[0]
-        date_end = dates[1]
+        date_start = dates.start_date
+        date_end = dates.start_date
 
         school, date_start, date_end, degree, location = self._escape_tex(school), self._escape_tex(date_start), self._escape_tex(date_end), self._escape_tex(degree), self._escape_tex(location) 
 
         self.resume_string += f"\\resumeentry{{{school}}}{{{date_start} -- {date_end}}}{{{degree}}}{{{location}}}\n"
+        self.resume_string += "\\entryspace\n"
+        self.resume_string += "\\begin{resumebullets}\n"
+
+        for bullet in bullets:
+            self.resume_string += f"  \\item {{{self._escape_tex(bullet)}}}\n"
+        self.resume_string += "\\end{resumebullets}\n"
         self.resume_string += "\\entryspace\n"
 
         self.sections.add("education")

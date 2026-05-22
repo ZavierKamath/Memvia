@@ -48,3 +48,13 @@ class ToolResult(BaseModel):
 class SkillSection(BaseModel):
     section_name: str
     section_elements: List[str]
+
+
+class Contact(BaseModel):
+    label: str
+    value: str
+
+
+class Dates(BaseModel):
+    start_date: str
+    end_date: str
