@@ -3,22 +3,16 @@ from pydantic_ai import Tool
 from src.agents.pipedagent import PipedAgent
 from src.prompts import RESUMEBOT_SYSTEM_PROMPT
 from src.services.tex_service import TexService
+from src.services.mem_service import MemoryService
 from src.tools.resume_tools import *
+from src.tools.kb_search import kb_search_prewrap
 from src.models import Dates, Contact
 
 class ResumeBot(PipedAgent):
-    def __init__(self, job_service):
+    def __init__(self, job_service, mem_service):
         tex_service = TexService(job_service.job_id)
 
         async def resume_start_tool(name: str, contacts: List[Contact], summary: Optional[str] = None):
-            """
-            Tool for initializing a new resume document. 
-
-            Args:
-                name: the owner of the resume's name
-                contacts: a list of tuples where the first element is the link of the contact and the second element is the display text of the contact
-                summary: high level resume summary that cannot be more than 1 sentence
-            """
             return await start_resume_prewrap(job_service, tex_service, name, contacts, summary)
 
         start_resume = Tool(
@@ -27,17 +21,7 @@ class ResumeBot(PipedAgent):
             description="Starts a resume for the given person with a name with the given contact links (Tuple[str, str] where the first string is the display and the second string is the link) and high level summary that cannot be more than 1 sentence.",
         )
 
-        async def resume_add_experience_tool(title: str, dates: Dates, role: str, location: str, bullets: List[str]):
-            """
-            Tool for adding an experience to the experience section of an already initialized resume
-
-            Args:
-                title: the title of the experience
-                dates: date range of the experience (a tuple of 2 strings). Dates must be formatted like 'May 2025' for example. second string can be 'Present'
-                role: the role of the person during this experience
-                location: the location of the experience. can be 'Remote'
-                bullets: a list of strings where each string is a bullet point that describes the experience in X Y Z format
-            """
+        async def resume_add_experience_tool(title: str, dates: str, role: str, location: str, bullets: List[str]):
             return await add_experience_to_resume_prewrap(job_service, tex_service, title, dates, role, location, bullets)
 
         add_experience = Tool(
@@ -46,16 +30,7 @@ class ResumeBot(PipedAgent):
             description="Tool to add an experience to a resume. Make sure to only add experiences one after the other with no skills or education inbetween.",
         )
 
-        async def resume_add_education_tool(school: str, dates: Dates, degree: str, location: str, bullets: List[str]):
-            """
-            Tool adding an education to the education secton of an already initialized resume
-
-            Args:
-                school: the title of the experience
-                dates: date range of the educaton (a tuple of 2 strings). Dates must be formatted like 'May 2025' for example. second string can be 'Present'
-                degree: name of the degree
-                location: the location of the education. can be 'Remote'
-            """
+        async def resume_add_education_tool(school: str, dates: str, degree: str, location: str, bullets: List[str]):
             return await add_education_to_resume_prewrap(job_service, tex_service, school, dates, degree, location, bullets)
 
         add_education = Tool(
@@ -65,12 +40,6 @@ class ResumeBot(PipedAgent):
         )
 
         async def resume_add_skills_tool(sections: List[SkillSection]):
-            """
-            Tool for adding an skills to the skills secton of an already initialized resume
-
-            Args:
-                sections: a list of SkillSections which are objects that each have a section name (group name of the section of skills) and section elements which are a list of strings (each representing a skill that is associated with the skill group)
-            """
             return await add_skills_to_resume_prewrap(job_service, tex_service, sections)
 
         add_skills = Tool(
@@ -79,16 +48,23 @@ class ResumeBot(PipedAgent):
             description="Tool to add skills to a resume. Make sure to only add skills one after the other with no educations or experiences inbetween.",
         )
 
-        async def resume_end_tool():
+        async def kb_search_tool(query: str, k: int):
             """
-            Tool for ending and compiling a resume and producing a PDF
+            Tool for searching through the user's knowledgebase of memories based on a query that is semantically similar to the relevant memories.
 
             Args:
-                N/A
-
-            Returns:
-                Pdf output path of resume
+                query: the phrase that can be used to find memories that are semantically similar
+                k: the number of top results to find
             """
+            return await kb_search_prewrap(mem_service, job_service, query, k)
+
+        kb_search = Tool(
+            kb_search_tool,
+            name="kb_search",
+            description="Searches the knowledgebase of memories for memories that are semantically similar to a query. Returns the top k most relevant results.",
+        )
+
+        async def resume_end_tool():
             return await end_resume_prewrap(job_service, tex_service)
 
         end_resume = Tool(
@@ -103,6 +79,6 @@ class ResumeBot(PipedAgent):
             description="Secondary AI for Memvia: a service that gives a user the ability to manage and chat with memories, particularly in the realm of maintaining knowledge of their professional life for the sake of job hunting applicatons. This agent is a subagent for MemBot, the primary AI Memvia who interacts directly with the user. ResumeBot is invoked to create a resume for the user with using predefined tools that take advantage of LaTeX to get the formatting just right.",
             system_prompt=RESUMEBOT_SYSTEM_PROMPT,
             session=job_service.job_id,
-            tools=[start_resume, add_experience, add_education, add_skills, end_resume],
+            tools=[start_resume, add_experience, add_education, add_skills, end_resume, kb_search],
         )
 

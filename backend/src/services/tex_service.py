@@ -23,7 +23,8 @@ class TexService():
         self.resume_string += "\\resumecontacts{\n"
 
         for contact in contacts:
-            self.resume_string += f"  \\contactlink{{{self._escape_tex(contact.value)}}}{{{self._escape_tex(contact.label)}}}\n"
+            href = self._normalize_contact_href(contact.value)
+            self.resume_string += f"  \\contactlink{{{self._escape_tex(href)}}}{{{self._escape_tex(contact.label)}}}\n"
         self.resume_string += "}\n"
 
         self.resume_string += f"\\resumesummary{{{self._escape_tex(summary)}}}\n\n"
@@ -33,19 +34,16 @@ class TexService():
         self.sections.add("start")
         return f"Started resume with {len(contacts)} contacts for {name} with a {len(summary) if summary else 0} character summary."
 
-    def resume_add_experience(self, title: str, dates: Dates, role: str, location: str, bullets: List[str]):
+    def resume_add_experience(self, title: str, dates: str, role: str, location: str, bullets: List[str]):
         if not "start" in self.sections:
             return "Must start the resume before making an Experience section"
 
         if not "experience" in self.sections:
             self.resume_string += "\\section{Experience}\n"
 
-        date_start = dates.start_date
-        date_end = dates.end_date
+        title, dates, role, location = self._escape_tex(title), self._escape_tex(dates), self._escape_tex(role), self._escape_tex(location) 
 
-        title, date_start, date_end, role, location = self._escape_tex(title), self._escape_tex(date_start), self._escape_tex(date_end), self._escape_tex(role), self._escape_tex(location) 
-
-        self.resume_string += f"\\resumeentry{{{title}}}{{{date_start} -- {date_end}}}{{{role}}}{{{location}}}\n"
+        self.resume_string += f"\\resumeentry{{{title}}}{{{dates}}}{{{role}}}{{{location}}}\n"
         self.resume_string += "\\begin{resumebullets}\n"
 
         for bullet in bullets:
@@ -54,22 +52,18 @@ class TexService():
         self.resume_string += "\\entryspace\n"
 
         self.sections.add("experience")
-        return f"Started resume with {len(bullets)} bullets for {role} at {title}."
+        return f"Added to resume with {len(bullets)} bullets for {role} at {title}."
 
-    def resume_add_education(self, school: str, dates: Dates, degree: str, location: str, bullets: List[str]):
+    def resume_add_education(self, school: str, dates: str, degree: str, location: str, bullets: List[str]):
         if not "start" in self.sections:
             return "Must start the resume before making an Education section"
 
         if not "education" in self.sections:
             self.resume_string += "\\section{Education}\n"
 
-        date_start = dates.start_date
-        date_end = dates.start_date
+        school, dates, degree, location = self._escape_tex(school), self._escape_tex(dates), self._escape_tex(degree), self._escape_tex(location) 
 
-        school, date_start, date_end, degree, location = self._escape_tex(school), self._escape_tex(date_start), self._escape_tex(date_end), self._escape_tex(degree), self._escape_tex(location) 
-
-        self.resume_string += f"\\resumeentry{{{school}}}{{{date_start} -- {date_end}}}{{{degree}}}{{{location}}}\n"
-        self.resume_string += "\\entryspace\n"
+        self.resume_string += f"\\resumeentry{{{school}}}{{{dates}}}{{{degree}}}{{{location}}}\n"
         self.resume_string += "\\begin{resumebullets}\n"
 
         for bullet in bullets:
@@ -79,7 +73,7 @@ class TexService():
 
         self.sections.add("education")
 
-        return f"Added Education section for {degree} at {school}."
+        return f"Added to Education section for {degree} at {school}."
 
     def resume_add_skills(self, sections: List[SkillSection]):
         if not "start" in self.sections:
@@ -100,7 +94,7 @@ class TexService():
 
         self.sections.add("skills")
 
-        return f"Added Skills section with {len(sections)} sections."
+        return f"Added to Skills section with {len(sections)} sections."
 
     def resume_end(self):
         self.resume_string += "\\end{document}\n"
@@ -122,11 +116,32 @@ class TexService():
         }
         return "".join(replacements.get(char, char) for char in value)
 
+    def _normalize_contact_href(self, value: str):
+        href = value.strip()
+        lower_href = href.lower()
+
+        if "://" in href or lower_href.startswith(("mailto:", "tel:")):
+            return href
+        if "@" in href and not href.startswith("/"):
+            return f"mailto:{href}"
+        if lower_href.startswith("www."):
+            return f"https://{href}"
+
+        return href
+
     def _compile_tex(self):
-        pdf_name = "reusme_" + str(uuid4()) + ".pdf"
+        random_uuid = str(uuid4())
+
+        pdf_name = "reusme_" + random_uuid + ".pdf"
         output_pdf = self.session_path / "resumes" / pdf_name
         output_pdf = output_pdf.resolve()
+
+        tex_name = "resume_" + random_uuid + ".tex"
+        output_tex = self.session_path / "resumes" / tex_name
+        output_tex = output_tex.resolve()
+
         output_pdf.parent.mkdir(parents=True, exist_ok=True)
+        output_tex.parent.mkdir(parents=True, exist_ok=True)
 
         with TemporaryDirectory() as temp_dir:
             temp_path = Path(temp_dir)
@@ -154,6 +169,7 @@ class TexService():
             if result.returncode != 0 or not built_pdf.exists():
                 raise RuntimeError(result.stdout or "latexmk failed")
 
+            copy2(tex_file, output_tex)
             copy2(built_pdf, output_pdf)
             self.output_path = output_pdf
             return f"Resume compiled and output pdf located at: {output_pdf}"

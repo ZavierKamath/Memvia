@@ -3,7 +3,7 @@ from pydantic_ai import Tool
 from src.agents.pipedagent import PipedAgent
 from src.prompts import MEMBOT_SYSTEM_PROMPT
 from src.tools.spawn_resumebot import spawn_resumebot_prewrap
-from src.tools.kb_search import kb_search as kb_search_prewrap
+from src.tools.kb_search import kb_search_prewrap
 from src.tools.web_search import web_search_prewrap
 from src.tools.publish_copybox import publish_copybox_prewrap
 
@@ -12,7 +12,7 @@ class MemBot(PipedAgent):
 
         async def spawn_resumebot_tool(instructions: str):
             "Spawns ResumeBot with the instructions that are given. ResumeBot will work and return a result in natual language."
-            result = await spawn_resumebot_prewrap(job_service, instructions)
+            result = await spawn_resumebot_prewrap(job_service, mem_service, instructions)
             return result.output
 
         spawn_resumebot = Tool(

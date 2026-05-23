@@ -5,3 +5,8 @@ venv/
 __pycache__/
 data/
 sessions/
+personal_mems.json
+.playwright-mcp/
+*.json
+backend/src/tests/test_outputs/
+backend/src/tests/generate_test_resume.py

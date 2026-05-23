@@ -1,6 +1,6 @@
 from src.models import ToolResult
 
-async def kb_search(mem_service, job_service, query: str, k: int):
+async def kb_search_prewrap(mem_service, job_service, query: str, k: int):
     """
     Tool for searching through the user's knowledgebase of memories based on a query that is semantically similar to the relevant memories.
 
