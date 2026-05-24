@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { useChat } from "../../hooks/useChat";
 import type { CopyableTextType } from "../../context/ChatContext";
-import './CopyBox.css'
 
 export function CopyboxElement(
 	{ copyboxElement }:

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { invokeJob } from '../../api/jobs.ts';
 import { useChat } from '../../hooks/useChat.tsx';
 import type { ChatMessageType } from '../../context/ChatContext.tsx';
-import './Sendbar.css'
+import { SendHorizontal } from "lucide-react"
 
 function Chatbar(
 	{ inputText, setInputText, handleSend }:
@@ -39,7 +39,7 @@ function Chatbar(
 			onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputText(e.target.value)}
 			rows={1}
 			placeholder="Input your prompt for MemBot..."
-			className="chatbar"
+			className="text-text-muted bg-bg-light rounded-xl border border-border px-4 py-2 w-150 line-height-1 min-h-10 max-h-30 bg-gradient-to-b from-bg-light via-bg to-bg hover:border-highlight focus:outline-none focus:border-primary focus:ring-1 focus-ring-primary/20 resize-none scrollbar-hidden"
 		/>
 	)
 }
@@ -81,7 +81,7 @@ export function Sendbar() {
 	}
 
 	return (
-		<div className="sendbar">
+		<div className="flex gap-4 justify-center">
 			<Chatbar
 				inputText={inputText}
 				setInputText={setInputText}
@@ -89,8 +89,9 @@ export function Sendbar() {
 			/>
 			<button
 				onClick={handleSend}
+				className="h-10 text-text-muted flex justify-center items-center bg-bg-light rounded-xl border border-border px-4 py-2 w-20 bg-gradient-to-b from-bg-light via-bg to-bg hover:border-highlight hover:text-text focus:outline-none focus:border-highlight focus:ring-1 focus-ring-primary/10"
 			>
-				➤
+				<SendHorizontal size={18}/>
 			</button>
 		</div>
 	)

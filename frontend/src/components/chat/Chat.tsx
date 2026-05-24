@@ -23,24 +23,16 @@ export function Chat() {
 	}, [chatContext.sessionId, chatContext.messageNumber]);
 
 	function conditionalScreenRender() {
-		if (chatContext.resumeBotView) {
-			return (
-				<div className="screens-container">	
-					<Screen />
-					<ResumeScreen />
-				</div>	
-			)
-		} else {
-			return (
-				<div className="screens-container">	
-					<Screen />	
-				</div>	
-			)
-		}
+		return (
+			<div className="flex gap-2 flex-col sm:flex-row sm:justify-center sm:items-center w-full">	
+				<Screen />
+				{chatContext.resumeBotView ? <ResumeScreen /> : (<></>)}
+			</div>	
+		)
 	}
 
 	return (
-		<div className="chat-screen">
+		<div className="flex flex-col gap-2 w-full"> 
 			{conditionalScreenRender()}
 			<Sendbar />
 		</div>

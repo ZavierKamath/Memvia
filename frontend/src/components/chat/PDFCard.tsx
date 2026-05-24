@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
-import './PDFCard.css'
 
 export function PDFCard({ pdfPath }: { pdfPath: string }) {
     const boxRef = useRef(null);

@@ -2,7 +2,6 @@ import { useEffect } from "react"
 import { useMemories } from '../../hooks/useMemories'
 import { AddMemoryForm } from "./AddMemoryForm"
 import { MemoryCard } from "./MemoryCard"
-import './MemoryManager.css'
 
 export function MemoryManager() {
 	const memoryContext = useMemories();
