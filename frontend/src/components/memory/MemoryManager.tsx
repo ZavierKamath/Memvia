@@ -23,6 +23,7 @@ export function MemoryManager() {
 		if (mode === "view") {
 			return (
 				<div className="flex flex-col gap-6 px-6 py-6 bg-bg-dark border-2 border-border rounded-xl overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-hidden">
+					<h2 className="text-text px-1 py-[0.5] border-b-2 border-secondary text-lg font-semibold mr-auto ml-2">Memories</h2>
 					{memoryContext.memories.map((memory) => (
 						<MemoryCard
 							key={memory.mem_id}

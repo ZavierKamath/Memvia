@@ -118,7 +118,7 @@ export function ChatMessage({ message }: { message: ChatMessageType }) {
 
 	return (
 		<div
-			className={`flex flex-col gap-4 rounded-xl border-2 line-height-1 px-4 py-2 ${sender === "USER" ? "min-w-100 max-w-160 shadow-md shadow-black/80 text-left ml-auto rounded-br-none border-border bg-bg text-text" : "text-left rounded-bl-none bg-none text-text border-none"}`}
+			className={`flex flex-col gap-4 rounded-xl border-2 line-height-1 px-4 py-2 break-words ${sender === "USER" ? "min-w-0 max-w-160 shadow-md shadow-black/80 text-left ml-auto rounded-br-none border-border bg-bg text-text" : "text-left rounded-bl-none bg-none text-text border-none"}`}
 		>
 			<div>
 				{sender === "AI" ? (

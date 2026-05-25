@@ -73,6 +73,7 @@ export function AddMemoryForm(
 
 	return (
 		<form id="add-memory-form" className={conditionalClass()} onSubmit={handleSubmit}>
+			<h2 className="text-text px-1 py-[0.5] border-b-2 border-secondary text-lg font-semibold mr-auto ml-2">Add Memory</h2>
 			<select value={kind} onChange={(e) => setKind(e.target.value as MemoryKind)} name="kind"
 				className="text-text text-sm bg-bg-light px-2 py-2 rounded-xl border border-border-muted focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary "
 			>

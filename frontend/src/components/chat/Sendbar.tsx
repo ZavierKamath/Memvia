@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { invokeJob } from '../../api/jobs.ts';
 import { useChat } from '../../hooks/useChat.tsx';
 import type { ChatMessageType } from '../../context/ChatContext.tsx';
@@ -21,6 +21,10 @@ function Chatbar(
 		el.style.height = "auto"
 		el.style.height = `${Math.min(el.scrollHeight,75)}px`
 	}
+
+	useEffect(() => {
+		resize()
+	}, [inputText])
 
 
 	function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
