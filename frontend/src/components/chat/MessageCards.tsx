@@ -14,7 +14,7 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 	if (expanded) {
 		return (
 			<div className="flex flex-col">
-				<div className="text-sm shadow-md border-2 border-border shadow-black/80 flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-b-none border-b-1 text-text-muted">
+				<div className="text-sm shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] border-2 border-border flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-b-none border-b-1 text-text-muted">
 					<p className="flex gap-2 text-text">
 						<Wrench size={16}/>
 						<span className="text-text">Tools Used:</span><span className="text-primary font-bold">{toolMessages.length}</span>
@@ -26,7 +26,7 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 						<ChevronUp size={20}/>
 					</button>
 				</div>		
-				<div className="text-xs flex flex-col border-2 border-border border-t-1 gap-2 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-t-none shadow-md shadow-black/60">
+				<div className="text-xs flex flex-col border-2 border-border border-t-1 gap-2 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-t-none shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)]">
 					{toolMessages.map((message) => {
 						return <ToolMessage key={JSON.stringify(message.outputs)} message={message} agent="membot"/>
 					})}
@@ -35,7 +35,7 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 		)
 	} else {
 		return (
-			<div className="text-sm shadow-md border-2 border-border shadow-black/60 flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl text-text-muted">
+			<div className="text-sm shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] border-2 border-border flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl text-text-muted">
 				<p className="flex gap-2 text-text">
 					<Wrench size={16}/>
 					<span>Tools Used:</span><span className="text-primary font-bold">{toolMessages.length}</span>
@@ -118,7 +118,7 @@ export function ChatMessage({ message }: { message: ChatMessageType }) {
 
 	return (
 		<div
-			className={`flex flex-col gap-4 rounded-xl border-2 line-height-1 px-4 py-2 break-words ${sender === "USER" ? "min-w-0 max-w-160 shadow-md shadow-black/80 text-left ml-auto rounded-br-none border-border bg-bg text-text" : "text-left rounded-bl-none bg-none text-text border-none"}`}
+			className={`flex flex-col gap-4 rounded-xl border-2 line-height-1 px-4 py-2 break-words ${sender === "USER" ? "min-w-0 max-w-160 shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] text-left ml-auto rounded-br-none border-border bg-bg text-text" : "text-left rounded-bl-none bg-none text-text border-none"}`}
 		>
 			<div>
 				{sender === "AI" ? (

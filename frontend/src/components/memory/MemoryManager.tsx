@@ -22,7 +22,7 @@ export function MemoryManager() {
 	function conditionalRender() {
 		if (mode === "view") {
 			return (
-				<div className="flex flex-col gap-6 px-6 py-6 bg-bg-dark border-2 border-border rounded-xl overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-hidden">
+				<div className="flex flex-col gap-6 px-6 py-6 bg-bg-dark border-2 border-border rounded-xl overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-hidden shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)]">
 					<h2 className="text-text px-1 py-[0.5] border-b-2 border-secondary text-lg font-semibold mr-auto ml-2">Memories</h2>
 					{memoryContext.memories.map((memory) => (
 						<MemoryCard
@@ -51,7 +51,7 @@ export function MemoryManager() {
 	return (
 		<div className="flex flex-col justify-center items-center gap-3">
 			<button
-				className="px-4 py-2 text-text-muted border-2 border-border bg-bg-dark hover:text-text hover:border-secondary rounded-xl shadow-[inset_0_0.25rem_0.5rem_rgba(0,0,0,0.2)]"
+				className="px-4 py-2 text-text-muted border-2 border-border bg-bg-dark hover:text-text hover:border-secondary rounded-xl shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)]"
 				onClick={toggleMode}
 			>
 			{mode === "view" ? "Add Memory" : "View Memories"}

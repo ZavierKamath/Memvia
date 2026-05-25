@@ -52,7 +52,7 @@ export function Copybox() {
 			if (conditionalClass() === 'full') {
 				return (
 					<>
-						<div className="fixed top-16 right-68 rounded-xl bg-bg-dark border-2 border-highlight text-text px-6 py-3 flex flex-col gap-4 items-center w-[44rem] h-[36rem] shadow-md shadow-black/100 overflow-y-auto">
+						<div className="fixed top-16 right-36 rounded-xl bg-bg-dark border-2 border-highlight text-text px-6 py-3 flex flex-col gap-4 items-center w-[56rem] h-[36rem] shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] overflow-y-auto">
 							<h2 className="text-text mb-2 px-1 py-[0.5] border-b-2 border-secondary text-lg font-semibold mr-auto ml-2">Copybox</h2>
 							{[...chatContext.copybox].reverse().map((copyboxElementValue) => (
 								<CopyboxElement key={copyboxElementValue.order} copyboxElement={copyboxElementValue} />
@@ -79,7 +79,7 @@ export function Copybox() {
 	return (
 		<>
 			<button
-				className={`rounded-xl px-4 py-2 bg-bg-light border-2  hover:text-text hover:border-primary shadow-[inset_0_0.25rem_0.5rem_rgba(0,0,0,0.2)] ${active ? "text-text border-primary" : "border-border-muted text-text-muted"}`}
+				className={`rounded-xl px-4 py-2 bg-bg-light border-2  hover:text-text hover:border-primary shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] ${active ? "text-text border-primary" : "border-border-muted text-text-muted"}`}
 				onClick={toggleActive}
 			>
 				<ClipboardList size={20}/>

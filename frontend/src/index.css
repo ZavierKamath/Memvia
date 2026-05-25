@@ -21,14 +21,14 @@
 
 body.light {
   /* oklch */
-  --bg-dark: oklch(0.92 0.01 200);
-  --bg: oklch(0.96 0.01 200);
+  --bg-dark: oklch(0.94 0.01 200);
+  --bg: oklch(0.97 0.01 200);
   --bg-light: oklch(1 0.01 200);
   --text: oklch(0.15 0.02 200);
   --text-muted: oklch(0.4 0.02 200);
-  --highlight: oklch(1 0.02 200);
-  --border: oklch(0.6 0.02 200);
-  --border-muted: oklch(0.7 0.02 200);
+  --highlight: oklch(0.7 0.02 200);
+  --border: oklch(0.4 0.02 200);
+  --border-muted: oklch(0.5 0.02 200);
   --primary: oklch(0.4 0.1 200);
   --secondary: oklch(0.4 0.1 20);
   --danger: oklch(0.5 0.05 30);
