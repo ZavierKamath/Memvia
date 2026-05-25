@@ -59,7 +59,7 @@ export function Header() {
 				{chatContext.resumePdfPath === "" ? <></> : <OpenPDF />}
 				<button
 					onClick={toggleTheme}
-					className="border-2 rounded-xl border-border-muted px-4 py-2 text-text-muted hover:text-text hover:border-primary bg-bg-light"
+					className="border-2 rounded-xl border-border-muted px-4 py-2 text-text-muted hover:text-text hover:border-primary bg-bg-light shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)]"
 				>
 					<Power size={20}/>
 				</button>

@@ -30,7 +30,7 @@ export function MemoryCard(
 	function conditionalRenderEditMode() {
 		if (!editing) {
 			return (
-				<div className="flex flex-col gap-2 px-6 py-3 rounded-xl bg-bg-light">
+				<div className="flex flex-col gap-2 px-6 py-3 rounded-xl bg-bg-light shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)]">
 					<div className="flex justify-between items-center gap-8">
 						<h4 className="text-text text-sm">{memory.kind}</h4>
 						<div className="flex gap-4">

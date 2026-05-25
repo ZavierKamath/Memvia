@@ -67,8 +67,8 @@ export function AddMemoryForm(
 
 	function conditionalClass() {
 		return initContent ?
-			"flex flex-col gap-4 px-6 py-6 border-none rounded-xl bg-bg-light w-[24rem]" :
-			"flex flex-col gap-4 px-6 py-6 border-2 border-border rounded-xl bg-bg-dark w-[27rem]"
+			"flex flex-col gap-4 px-6 py-6 border-none rounded-xl bg-bg-light w-[24rem] shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)]" :
+			"flex flex-col gap-4 px-6 py-6 border-2 border-border rounded-xl bg-bg-dark w-[27rem] shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)]"
 	}
 
 	return (
