@@ -75,7 +75,7 @@ export function AddMemoryForm(
 		<form id="add-memory-form" className={conditionalClass()} onSubmit={handleSubmit}>
 			<h2 className="text-text px-1 py-[0.5] border-b-2 border-secondary text-lg font-semibold mr-auto ml-2">Add Memory</h2>
 			<select value={kind} onChange={(e) => setKind(e.target.value as MemoryKind)} name="kind"
-				className="text-text text-sm bg-bg-light px-2 py-2 rounded-xl border border-border-muted focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary "
+				className="text-text text-sm bg-bg-light px-2 py-2 rounded-xl border-2 border-border-muted focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary "
 			>
 				<option value="experience">Experience</option>
 				<option value="skills">Skills</option>
@@ -91,7 +91,7 @@ export function AddMemoryForm(
 				onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTitle(e.target.value)}
 				rows={1}
 				placeholder="Add memory title..."
-				className="border border-border-muted px-2 py-1 rounded-xl text-text font-semibold bg-bg-light focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary"
+				className="border-2 border-border-muted px-2 py-1 rounded-xl text-text font-semibold bg-bg-light focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary"
 			/>
 			<textarea
 				ref={contentRef}
@@ -101,7 +101,7 @@ export function AddMemoryForm(
 				onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
 				rows={1}
 				placeholder="Add memory content..."
-				className={`border border-border-muted bg-bg-light px-2 py-1 rounded-xl text-sm text-text-muted focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary ${initContent ? "min-h-[10rem] max-h-[15rem]" : "min-h-[20rem] max-h-[30-rem]"}`}
+				className={`border-2 border-border-muted bg-bg-light px-2 py-1 rounded-xl text-sm text-text-muted focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary ${initContent ? "min-h-[10rem] max-h-[15rem]" : "min-h-[20rem] max-h-[30-rem]"}`}
 			/>
 			<button
 				type="submit"

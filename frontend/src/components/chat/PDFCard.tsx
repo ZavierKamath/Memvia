@@ -22,7 +22,7 @@ export function PDFCard({ pdfPath }: { pdfPath: string }) {
 			<div className="absolute top-4 right-4 z-10">
 				<button
 					onClick={() => window.open(urlToPdf, "_blank")}
-					className="text-bg-dark hover:text-primary"
+					className="text-text hover:text-primary"
 				>
 					<ExternalLink />
 				</button>
@@ -30,7 +30,7 @@ export function PDFCard({ pdfPath }: { pdfPath: string }) {
 			<Document file={urlToPdf}>
 				<Page
 					pageNumber={1}
-					width={400}
+					width={500}
 					onLoadSuccess={(page) => {
 						const viewport = page.getViewport({ scale: 1 })
 						console.log(viewport.width, viewport.height)

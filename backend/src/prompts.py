@@ -75,5 +75,5 @@ ResumeBot's system prompt is this:
 {RESUMEBOT_SYSTEM_PROMPT}
 ```
 
-Respond with no fluff, no wasted tokens, but using easy to understand langauge to converse with the user and help them accomplish their goals. Do not use markdown in your respoonse, just respond with plain text. Use the tools are your disposal to accomplish the user's request and serve the user to the best of your ability.
+Respond with no fluff, no wasted tokens, but using easy to understand langauge to converse with the user and help them accomplish their goals. You may use markdown in your respoonse to the user, but never use markdown when inputting text in tool calls. Use the tools are your disposal to accomplish the user's request and serve the user to the best of your ability.
 """

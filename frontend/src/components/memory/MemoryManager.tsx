@@ -51,7 +51,7 @@ export function MemoryManager() {
 	return (
 		<div className="flex flex-col justify-center items-center gap-3">
 			<button
-				className="px-4 py-2 text-text-muted border-2 border-border bg-bg-dark hover:text-text hover:border-secondary rounded-xl shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)]"
+				className="px-4 py-2 text-text-muted border-2 border-border bg-bg-dark hover:text-text hover:border-secondary rounded-xl shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] hover:-motion-translate-y-loop-[10%] hover:motion-duration-700"
 				onClick={toggleMode}
 			>
 			{mode === "view" ? "Add Memory" : "View Memories"}

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+@plugin "tailwindcss-motion";
 
 :root {
   /* oklch */
@@ -17,12 +18,13 @@
   --warning: oklch(0.7 0.05 100);
   --success: oklch(0.7 0.05 160);
   --info: oklch(0.7 0.05 260);
+	--sendbar-bg: var(--bg-dark)
 }
 
 body.light {
   /* oklch */
-  --bg-dark: oklch(0.94 0.01 200);
-  --bg: oklch(0.97 0.01 200);
+  --bg-dark: oklch(0.97 0.01 200);
+  --bg: oklch(0.985 0.01 200);
   --bg-light: oklch(1 0.01 200);
   --text: oklch(0.15 0.02 200);
   --text-muted: oklch(0.4 0.02 200);
@@ -35,6 +37,7 @@ body.light {
   --warning: oklch(0.5 0.05 100);
   --success: oklch(0.5 0.05 160);
   --info: oklch(0.5 0.05 260);
+	--sendbar-bg: var(--bg-light)
 }
 
 html {
@@ -66,4 +69,5 @@ html {
 	--color-warning: var(--warning);
 	--color-success: var(--success);
 	--color-info: var(--info);
+	--color-sendbar-bg: var(--sendbar-bg);
 }

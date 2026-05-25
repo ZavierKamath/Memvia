@@ -18,16 +18,18 @@ function OpenPDF() {
 		<div>
 			<div>
 				<button
-					className={`border-2 bg-bg-light px-4 py-2 rounded-xl shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] hover:border-primary hover:text-text ${opened ? "border-primary text-text" : "border-border-muted text-text-muted"}`}
+					className={`border-2 bg-bg-light px-4 py-2 rounded-xl shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] hover:border-primary hover:text-text hover:-motion-translate-y-loop-[10%] hover:motion-duration-700 ${opened ? "border-primary text-text" : "border-border-muted text-text-muted"}`}
 					onClick={toggleOpened}
 				>
 					<Eye />
 				</button>
 			</div>
 			{opened ?
-				<div className="fixed top-16 right-20 px-6 py-6 border-2 border-highlight shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] rounded-xl bg-bg-dark flex items-center flex-col gap-2">
-					<h2 className="text-text mb-2 px-1 py-[0.5] border-b-2 border-secondary text-lg font-semibold mr-auto ml-2">Resume Preview</h2>
-					<PDFCard pdfPath={chatContext.resumePdfPath}/>
+				<div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-6 border-2 border-primary shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] rounded-xl bg-bg-dark flex items-center flex-col gap-2 z-[10]">
+					<div className="motion-translate-y-in-25 motion-opacity-in-0 motion-duration-300">
+						<h2 className="text-text mb-2 px-1 py-[0.5] border-b-2 border-secondary text-lg font-semibold mr-auto ml-2">Resume Preview</h2>
+						<PDFCard pdfPath={chatContext.resumePdfPath}/>
+					</div>
 				</div> :
 			<></>}
 		</div>
@@ -59,7 +61,7 @@ export function Header() {
 				{chatContext.resumePdfPath === "" ? <></> : <OpenPDF />}
 				<button
 					onClick={toggleTheme}
-					className="border-2 rounded-xl border-border-muted px-4 py-2 text-text-muted hover:text-text hover:border-primary bg-bg-light shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)]"
+					className="border-2 rounded-xl border-border-muted px-4 py-2 text-text-muted hover:text-text hover:border-primary bg-bg-light shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] hover:-motion-translate-y-loop-[10%] hover:motion-duration-700"
 				>
 					<Power size={20}/>
 				</button>
