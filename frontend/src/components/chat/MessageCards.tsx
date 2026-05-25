@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { ChatMessageType, ToolMessageType } from '../../context/ChatContext.tsx'
-import { ChevronUp, ChevronDown } from "lucide-react"
+import { ChevronUp, ChevronDown, Wrench } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
@@ -14,16 +14,19 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 	if (expanded) {
 		return (
 			<div className="flex flex-col">
-				<div className="text-sm shadow-md shadow-black/60 flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark border border-bg rounded-xl rounded-b-none text-text-muted">
-					<p className="flex gap-2"><span>Tools Used:</span><span className="text-primary font-bold">{toolMessages.length}</span></p>
+				<div className="text-sm shadow-md border-2 border-border shadow-black/80 flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-b-none border-b-1 text-text-muted">
+					<p className="flex gap-2 text-text">
+						<Wrench size={16}/>
+						<span className="text-text">Tools Used:</span><span className="text-primary font-bold">{toolMessages.length}</span>
+					</p>
 					<button
-						className=""
+						className="text-text-muted hover:text-text font-bold"
 						onClick={toggleExpanded}
 					>
-						<ChevronUp size={16}/>
+						<ChevronUp size={20}/>
 					</button>
 				</div>		
-				<div className="text-xs flex flex-col gap-2 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-t-none shadow-md shadow-black/60 border border-bg">
+				<div className="text-xs flex flex-col border-2 border-border border-t-1 gap-2 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-t-none shadow-md shadow-black/60">
 					{toolMessages.map((message) => {
 						return <ToolMessage key={JSON.stringify(message.outputs)} message={message} agent="membot"/>
 					})}
@@ -32,13 +35,16 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 		)
 	} else {
 		return (
-			<div className="text-sm shadow-md shadow-black/60 flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark border border-bg rounded-xl text-text-muted">
-				<p className="flex gap-2"><span>Tools Used:</span><span className="text-primary font-bold">{toolMessages.length}</span></p>
+			<div className="text-sm shadow-md border-2 border-border shadow-black/60 flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl text-text-muted">
+				<p className="flex gap-2 text-text">
+					<Wrench size={16}/>
+					<span>Tools Used:</span><span className="text-primary font-bold">{toolMessages.length}</span>
+				</p>
 				<button
-					className=""
+					className="text-text-muted hover:text-text font-bold"
 					onClick={toggleExpanded}
 				>
-					<ChevronDown size={16}/>
+					<ChevronDown size={20}/>
 				</button>
 			</div>		
 		)
@@ -82,15 +88,15 @@ export function ToolMessage({ message, agent }: { message: ToolMessageType, agen
 	}
 
 	function upOrDown() {
-		return expanded ? <ChevronUp size={12}/> : <ChevronDown size={12}/>
+		return expanded ? <ChevronUp size={16}/> : <ChevronDown size={16}/>
 	}
 
 	return (
 		<div className="flex flex-col gap-[0.5] w-full">
 			<div className="text-xs text-text-muted flex justify-between items-center bg-bg-dark rounded-xl px-2 py-1">
-				<div className="">{toolName}</div>
+				<div className="text-text">{toolName}</div>
 				<button
-					className="expansion-button"
+					className="text-text-muted hover:text-text"
 					onClick={() => toggleExpanded()}
 				>{upOrDown()}</button>
 			</div>
@@ -108,21 +114,13 @@ export function ChatMessage({ message }: { message: ChatMessageType }) {
 	}
 	console.log(`rendering message with sender: ${sender}, content: ${message_content.slice(0, 25)}..., number: ${message.number}, time: ${sentTimestamp}`)
 
-	const className = [
-		"div",
-		sender === "USER" ? "user-message" : "ai-message",
-	].filter(Boolean).join(" ")
-// bg-gradient-to-b from-bg-light via-bg to-bg
-
 	const cleanedMessage = message_content.replace(/^['"]|['"]$/g, "")
 
 	return (
 		<div
-			className={`flex flex-col gap-2 rounded-xl border bg-bg-light px-4 py-2 min-w-100 max-w-150 shadow-md shadow-black/60 ${sender === "USER" ? "text-text-muted text-left ml-auto rounded-br-none border-border" : "text-left rounded-bl-none bg-secondary text-bg-dark border-bg-dark"}`}
+			className={`flex flex-col gap-4 rounded-xl border-2 line-height-1 px-4 py-2 ${sender === "USER" ? "min-w-100 max-w-160 shadow-md shadow-black/80 text-left ml-auto rounded-br-none border-border bg-bg text-text" : "text-left rounded-bl-none bg-none text-text border-none"}`}
 		>
-			<div
-				className={`${sender === "USER" ? "text-text-muted" : "line-height-1 text-bg-light"}`}
-			>
+			<div>
 				{sender === "AI" ? (
 					<ReactMarkdown remarkPlugins={[remarkGfm]}>
 						{cleanedMessage}

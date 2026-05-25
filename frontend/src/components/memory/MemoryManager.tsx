@@ -1,10 +1,11 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useMemories } from '../../hooks/useMemories'
 import { AddMemoryForm } from "./AddMemoryForm"
 import { MemoryCard } from "./MemoryCard"
 
 export function MemoryManager() {
 	const memoryContext = useMemories();
+	const [mode, setMode] = useState<"view" | "add">("view")
 
 	useEffect(() => {
 		async function fetchMemories() {
@@ -14,22 +15,14 @@ export function MemoryManager() {
 		fetchMemories()
 	}, [])
 
-	return (
-		<div className="memory-manager">
-			<div className="memory-manager-form-section">
-				<h2>Add Memory</h2>
-				<AddMemoryForm
-					initKind="experience"
-					initMemId={crypto.randomUUID().toString()}
-					initTitle=""
-					initContent=""
-					isEdit={false}
-					setEditing={null}
-				/>
-			</div>
-			<div className="memory-manager-card-library-section">
-				<h2>View Memories</h2>
-				<div className="memory-card-library">
+	function toggleMode() {
+		setMode(mode === "view" ? "add" : "view")
+	}
+
+	function conditionalRender() {
+		if (mode === "view") {
+			return (
+				<div className="flex flex-col gap-6 px-6 py-6 bg-bg-dark border-2 border-border rounded-xl overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-hidden">
 					{memoryContext.memories.map((memory) => (
 						<MemoryCard
 							key={memory.mem_id}
@@ -39,7 +32,30 @@ export function MemoryManager() {
 						/>
 					))}
 				</div>
-			</div>
+			)
+		} else {
+			return (
+				<AddMemoryForm
+					initKind="experience"
+					initMemId={crypto.randomUUID().toString()}
+					initTitle=""
+					initContent=""
+					isEdit={false}
+					setEditing={null}
+				/>
+			)
+		}
+	}
+
+	return (
+		<div className="flex flex-col justify-center items-center gap-3">
+			<button
+				className="px-4 py-2 text-text-muted border-2 border-border bg-bg-dark hover:text-text hover:border-secondary rounded-xl shadow-[inset_0_0.25rem_0.5rem_rgba(0,0,0,0.2)]"
+				onClick={toggleMode}
+			>
+			{mode === "view" ? "Add Memory" : "View Memories"}
+			</button>
+			{conditionalRender()}
 		</div>
 	)
 }

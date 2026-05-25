@@ -2,7 +2,39 @@
 @import "tailwindcss";
 
 :root {
-	box-sizing: border-box;
+  /* oklch */
+  --bg-dark: oklch(0.1 0.01 200);
+  --bg: oklch(0.15 0.01 200);
+  --bg-light: oklch(0.2 0.01 200);
+  --text: oklch(0.96 0.02 200);
+  --text-muted: oklch(0.76 0.02 200);
+  --highlight: oklch(0.5 0.02 200);
+  --border: oklch(0.4 0.02 200);
+  --border-muted: oklch(0.3 0.02 200);
+  --primary: oklch(0.76 0.1 200);
+  --secondary: oklch(0.76 0.1 20);
+  --danger: oklch(0.7 0.05 30);
+  --warning: oklch(0.7 0.05 100);
+  --success: oklch(0.7 0.05 160);
+  --info: oklch(0.7 0.05 260);
+}
+
+body.light {
+  /* oklch */
+  --bg-dark: oklch(0.92 0.01 200);
+  --bg: oklch(0.96 0.01 200);
+  --bg-light: oklch(1 0.01 200);
+  --text: oklch(0.15 0.02 200);
+  --text-muted: oklch(0.4 0.02 200);
+  --highlight: oklch(1 0.02 200);
+  --border: oklch(0.6 0.02 200);
+  --border-muted: oklch(0.7 0.02 200);
+  --primary: oklch(0.4 0.1 200);
+  --secondary: oklch(0.4 0.1 20);
+  --danger: oklch(0.5 0.05 30);
+  --warning: oklch(0.5 0.05 100);
+  --success: oklch(0.5 0.05 160);
+  --info: oklch(0.5 0.05 260);
 }
 
 html {
@@ -19,19 +51,19 @@ html {
 	display: none;
 }
 
-@theme {
-	--color-bg-dark: hsl(38 24% 3%);
-	--color-bg: hsl(40 16% 7%);
-	--color-bg-light: hsl(40 8% 11%);
-	--color-text: hsl(40 34% 94%);
-	--color-text-muted: hsl(40 6% 69%);
-	--color-highlight: hsl(40 5% 38%);
-	--color-border: hsl(40 6% 27%);
-	--color-border-muted: hsl(40 9% 17%);
-	--color-primary: hsl(41 52% 60%);
-	--color-secondary: hsl(221 78% 76%);
-	--color-danger: hsl(9 26% 64%);
-	--color-warning: hsl(52 19% 57%);
-	--color-success: hsl(146 17% 59%);
-	--color-info: hsl(217 28% 65%);
+@theme inline {
+	--color-bg-dark: var(--bg-dark);
+	--color-bg: var(--bg);
+	--color-bg-light: var(--bg-light);
+	--color-text: var(--text);
+	--color-text-muted: var(--text-muted);
+	--color-highlight: var(--highlight);
+	--color-border: var(--border);
+	--color-border-muted: var(--border-muted);
+	--color-primary: var(--primary);
+	--color-secondary: var(--secondary);
+	--color-danger: var(--danger);
+	--color-warning: var(--warning);
+	--color-success: var(--success);
+	--color-info: var(--info);
 }

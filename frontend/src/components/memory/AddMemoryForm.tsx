@@ -66,11 +66,22 @@ export function AddMemoryForm(
 	}
 
 	function conditionalClass() {
-		return initContent ? "last" : "first"
+		return initContent ?
+			"flex flex-col gap-4 px-6 py-6 border-none rounded-xl bg-bg-light w-[24rem]" :
+			"flex flex-col gap-4 px-6 py-6 border-2 border-border rounded-xl bg-bg-dark w-[27rem]"
 	}
 
 	return (
 		<form id="add-memory-form" className={conditionalClass()} onSubmit={handleSubmit}>
+			<select value={kind} onChange={(e) => setKind(e.target.value as MemoryKind)} name="kind"
+				className="text-text text-sm bg-bg-light px-2 py-2 rounded-xl border border-border-muted focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary "
+			>
+				<option value="experience">Experience</option>
+				<option value="skills">Skills</option>
+				<option value="education">Education</option>
+				<option value="project">Project</option>
+				<option value="other">Other</option>
+			</select>
 			<textarea
 				ref={titleRef}
 				onInput={resizeTitle}
@@ -79,15 +90,8 @@ export function AddMemoryForm(
 				onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTitle(e.target.value)}
 				rows={1}
 				placeholder="Add memory title..."
-				className="form-title"
+				className="border border-border-muted px-2 py-1 rounded-xl text-text font-semibold bg-bg-light focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary"
 			/>
-			<select value={kind} onChange={(e) => setKind(e.target.value as MemoryKind)} name="kind">
-				<option value="experience">Experience</option>
-				<option value="skills">Skills</option>
-				<option value="education">Education</option>
-				<option value="project">Project</option>
-				<option value="other">Other</option>
-			</select>
 			<textarea
 				ref={contentRef}
 				onInput={resizeContent}
@@ -96,9 +100,12 @@ export function AddMemoryForm(
 				onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
 				rows={1}
 				placeholder="Add memory content..."
-				className="form-content"
+				className={`border border-border-muted bg-bg-light px-2 py-1 rounded-xl text-sm text-text-muted focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary ${initContent ? "min-h-[10rem] max-h-[15rem]" : "min-h-[20rem] max-h-[30-rem]"}`}
 			/>
-			<button type="submit">Submit</button>
+			<button
+				type="submit"
+				className="text-text-muted border-2 border-border-muted rounded-xl bg-bg-light py-2 hover:text-text hover:border-primary"
+			>Submit</button>
 		</form>
 	)
 }

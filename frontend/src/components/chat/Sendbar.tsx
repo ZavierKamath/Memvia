@@ -39,7 +39,7 @@ function Chatbar(
 			onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputText(e.target.value)}
 			rows={1}
 			placeholder="Input your prompt for MemBot..."
-			className="text-text-muted bg-bg-light rounded-xl border border-border px-4 py-2 w-150 line-height-1 min-h-10 max-h-30 bg-gradient-to-b from-bg-light via-bg to-bg hover:border-highlight focus:outline-none focus:border-primary focus:ring-1 focus-ring-primary/20 resize-none scrollbar-hidden"
+			className="text-text-muted bg-bg-dark rounded-xl border-2 border-highlight px-4 py-2 w-150 line-height-1 min-h-10 max-h-30 hover:border-primary focus:outline-none focus:border-primary focus:ring-1 focus-ring-primary/20 resize-none scrollbar-hidden shadow-md shadow-black/90 focus:text-text"
 		/>
 	)
 }
@@ -81,7 +81,7 @@ export function Sendbar() {
 	}
 
 	return (
-		<div className="flex gap-4 justify-center">
+		<div className="fixed bottom-10 right-50 flex gap-4 justify-center">
 			<Chatbar
 				inputText={inputText}
 				setInputText={setInputText}
@@ -89,7 +89,7 @@ export function Sendbar() {
 			/>
 			<button
 				onClick={handleSend}
-				className="h-10 text-text-muted flex justify-center items-center bg-bg-light rounded-xl border border-border px-4 py-2 w-20 bg-gradient-to-b from-bg-light via-bg to-bg hover:border-highlight hover:text-text focus:outline-none focus:border-highlight focus:ring-1 focus-ring-primary/10"
+				className="h-10 text-text-muted flex justify-center items-center bg-bg-dark rounded-xl border-2 border-highlight px-4 py-2 w-20 hover:border-primary hover:text-text focus:outline-none focus:border-highlight focus:ring-1 focus:ring-primary/10 shadow-md shadow-black/90 focus:ring-b-2"
 			>
 				<SendHorizontal size={18}/>
 			</button>
