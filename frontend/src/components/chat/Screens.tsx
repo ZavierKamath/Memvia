@@ -26,7 +26,7 @@ export function Screen() {
 	return (
 		<div
 			ref={screenRef}
-			className="w-full min-h-0 flex-1 overflow-y-scroll bg-bg-light px-8 py-8 rounded-b-none rounded-tr-none flex flex-col gap-8 mb-28 shadow-[inset_0_0.25rem_0.5rem_rgba(0,0,0,0.2)]"
+			className="w-full min-h-0 flex-1 overflow-y-scroll bg-bg-light px-20 py-8 rounded-b-none rounded-tr-none flex flex-col gap-8 mb-28"
 		>
 			{chat.map((message: ChatItemType) => (
 				conditionalMessageRender(message)

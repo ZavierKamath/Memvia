@@ -14,7 +14,7 @@ export function Sidebar() {
 	}
 
 	return (
-		<div className="flex flex-col gap-8 p-6">
+		<div className="flex flex-col gap-8 p-6 bg-bg-light h-full">
 			<ToolSet toolMessages={toolMessages}/>
 			<MemoryManager />
 		</div>

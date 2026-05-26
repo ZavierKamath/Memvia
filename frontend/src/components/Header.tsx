@@ -16,6 +16,9 @@ function OpenPDF() {
 
 	return (
 		<div>
+			{opened && (
+				<div onClick={() => setOpened(false)} id="blur-layer" className="fixed inset-0 z-40 bg-black/30 backdrop-blur-xl"></div>
+			)}
 			<div>
 				<button
 					className={`border-2 bg-bg-light px-4 py-2 rounded-xl shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] hover:border-primary hover:text-text hover:-motion-translate-y-loop-[10%] hover:motion-duration-700 ${opened ? "border-primary text-text" : "border-border-muted text-text-muted"}`}
@@ -25,8 +28,8 @@ function OpenPDF() {
 				</button>
 			</div>
 			{opened ?
-				<div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-6 border-2 border-primary shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] rounded-xl bg-bg-dark flex items-center flex-col gap-2 z-[10]">
-					<div className="motion-translate-y-in-25 motion-opacity-in-0 motion-duration-300">
+				<div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-6 border-2 border-primary shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] rounded-xl bg-bg-dark z-[50]">
+					<div className="motion-translate-y-in-25 motion-opacity-in-0 motion-duration-300 flex items-center flex-col gap-2">
 						<h2 className="text-text mb-2 px-1 py-[0.5] border-b-2 border-secondary text-lg font-semibold mr-auto ml-2">Resume Preview</h2>
 						<PDFCard pdfPath={chatContext.resumePdfPath}/>
 					</div>
@@ -49,7 +52,7 @@ export function Header() {
 	}
 
 	return (
-		<header className="px-8 py-4 col-span-2 bg-bg text-text flex justify-between items-center">
+		<header className="border-b-2 border-border px-8 py-4 col-span-2 bg-bg text-text flex justify-between items-center">
 			<h1 className="text-xl border-b-2 border-primary px-1"> 
 				<span className="text-text font-normal">MEM</span><span className="font-bold text-secondary italic">VIA</span>
 			</h1>	

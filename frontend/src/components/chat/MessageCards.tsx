@@ -17,7 +17,7 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 		return (
 			<div className="flex flex-col">
 				<div
-					className="text-sm shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] border-2 border-border flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-b-none border-b-1 text-text-muted"
+					className="text-sm shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] border-2 border-border flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-b-none border-b-1 text-text-muted hover:border-primary"
 					onClick={toggleExpanded}
 				>
 					<p className="flex gap-2 text-text">

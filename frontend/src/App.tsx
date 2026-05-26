@@ -5,7 +5,7 @@ import { Sendbar } from "./components/chat/Sendbar.tsx"
 
 function App() {
 	return (
-		<div className="h-screen grid grid-rows-[auto_1fr] grid-cols-[30rem_1fr] bg-bg">
+		<div id="full-app" className="h-screen grid grid-rows-[auto_1fr] grid-cols-[30rem_1fr] bg-bg">
 			<Header />
 			<aside className="row-start-2 col-start-1 overflow-y-scroll min-h-0">
 				<Sidebar />
