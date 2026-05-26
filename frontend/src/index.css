@@ -1,88 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@plugin "tailwindcss-motion";
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* oklch */
+  --bg-dark: oklch(0.1 0.01 200);
+  --bg: oklch(0.15 0.01 200);
+  --bg-light: oklch(0.2 0.01 200);
+  --text: oklch(0.96 0.02 200);
+  --text-muted: oklch(0.76 0.02 200);
+  --highlight: oklch(0.5 0.02 200);
+  --border: oklch(0.4 0.02 200);
+  --border-muted: oklch(0.3 0.02 200);
+  --primary: oklch(0.76 0.1 200);
+  --secondary: oklch(0.76 0.1 20);
+  --danger: oklch(0.7 0.05 30);
+  --warning: oklch(0.7 0.05 100);
+  --success: oklch(0.7 0.05 160);
+  --info: oklch(0.7 0.05 260);
+	--sendbar-bg: var(--bg-dark)
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+body.light {
+  /* oklch */
+  --bg-dark: oklch(0.97 0.01 200);
+  --bg: oklch(0.985 0.01 200);
+  --bg-light: oklch(1 0.01 200);
+  --text: oklch(0.15 0.02 200);
+  --text-muted: oklch(0.4 0.02 200);
+  --highlight: oklch(0.7 0.02 200);
+  --border: oklch(0.4 0.02 200);
+  --border-muted: oklch(0.5 0.02 200);
+  --primary: oklch(0.4 0.1 200);
+  --secondary: oklch(0.4 0.1 20);
+  --danger: oklch(0.5 0.05 30);
+  --warning: oklch(0.5 0.05 100);
+  --success: oklch(0.5 0.05 160);
+  --info: oklch(0.5 0.05 260);
+	--sendbar-bg: var(--bg-light)
 }
 
 html {
 	font-size: 16px;
+	font-family: 'Inter', system-ui, sans-serif;
+}
+
+.scrollbar-hidden {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+	display: none;
+}
+
+@theme inline {
+	--color-bg-dark: var(--bg-dark);
+	--color-bg: var(--bg);
+	--color-bg-light: var(--bg-light);
+	--color-text: var(--text);
+	--color-text-muted: var(--text-muted);
+	--color-highlight: var(--highlight);
+	--color-border: var(--border);
+	--color-border-muted: var(--border-muted);
+	--color-primary: var(--primary);
+	--color-secondary: var(--secondary);
+	--color-danger: var(--danger);
+	--color-warning: var(--warning);
+	--color-success: var(--success);
+	--color-info: var(--info);
+	--color-sendbar-bg: var(--sendbar-bg);
 }

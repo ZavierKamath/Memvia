@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { createEventListenersForJob } from '../../api/jobs.ts';
 import { useChat } from '../../hooks/useChat.tsx';
-import { Screen, ResumeScreen } from './Screens.tsx';
-import { Sendbar } from './Sendbar.tsx';
+import { Screen } from './Screens.tsx';
 
 export function Chat() {
 	const chatContext = useChat();
@@ -22,27 +21,8 @@ export function Chat() {
 		)
 	}, [chatContext.sessionId, chatContext.messageNumber]);
 
-	function conditionalScreenRender() {
-		if (chatContext.resumeBotView) {
-			return (
-				<div className="screens-container">	
-					<Screen />
-					<ResumeScreen />
-				</div>	
-			)
-		} else {
-			return (
-				<div className="screens-container">	
-					<Screen />	
-				</div>	
-			)
-		}
-	}
 
 	return (
-		<div className="chat-screen">
-			{conditionalScreenRender()}
-			<Sendbar />
-		</div>
+		<Screen />
 	);
 }

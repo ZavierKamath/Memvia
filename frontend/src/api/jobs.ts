@@ -101,7 +101,7 @@ export function createEventListenersForJob(
 		const now = new Date()
 		addMessage({
 			sender: "AI",
-			message: JSON.stringify(data),
+			message: data,
 			number: messageNumber,
 			sentTimestamp: new Intl.DateTimeFormat("en-US", {
 				timeZone: "America/New_York",

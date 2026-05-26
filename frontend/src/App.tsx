@@ -1,19 +1,19 @@
-import './App.css';
-import { useTab } from './hooks/useTab.tsx'
 import { Chat } from './components/chat/Chat.tsx';
-import { MemoryManager } from './components/memory/MemoryManager.tsx';
-import TabSwitcher from './components/TabSwitcher.tsx';
-import { Copybox } from './components/copy/CopyBox.tsx';
+import { Header } from "./components/Header.tsx"
+import { Sidebar } from "./components/Sidebar.tsx"
+import { Sendbar } from "./components/chat/Sendbar.tsx"
 
 function App() {
-	const tabContext = useTab();
 	return (
-		<div className="app">
-			<header>
-				<TabSwitcher />
-			</header>
-			{tabContext.tab === "chat" ? <Chat /> : <MemoryManager />}
-			{tabContext.tab === "chat" ? <Copybox /> : <></>}
+		<div id="full-app" className="h-screen grid grid-rows-[auto_1fr] grid-cols-[30rem_1fr] bg-bg">
+			<Header />
+			<aside className="row-start-2 col-start-1 overflow-y-scroll min-h-0 border-l-2 border-border border-b-2">
+				<Sidebar />
+			</aside>
+			<main className="row-start-2 col-start-2 overflow-hidden min-h-0 flex flex-col bg-bg-light border-x-2 border-r-2 border-b-2 border-border ">
+				<Chat />
+				<Sendbar />
+			</main>
 		</div>
 	)
 }
