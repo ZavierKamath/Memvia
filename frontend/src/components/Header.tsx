@@ -52,7 +52,7 @@ export function Header() {
 	}
 
 	return (
-		<header className="border-b-2 border-border px-8 py-4 col-span-2 bg-bg text-text flex justify-between items-center">
+		<header className="border-2 border-border px-8 py-4 col-span-2 bg-bg text-text flex justify-between items-center">
 			<h1 className="text-xl border-b-2 border-primary px-1"> 
 				<span className="text-text font-normal">MEM</span><span className="font-bold text-secondary italic">VIA</span>
 			</h1>	
