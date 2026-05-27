@@ -1,6 +1,11 @@
 import { createContext, useState } from "react";
 import type { ReactNode } from "react";
 
+export type ThinkingMessageType = {
+	message_type: 'thinking'
+	message: string
+}
+
 export type ToolMessageType = {
 	toolName: string
 	inputs: Record<string, unknown>
@@ -19,7 +24,7 @@ export type CopyableTextType = {
 	order: number
 }
 
-export type ChatItemType = ChatMessageType | ToolMessageType;
+export type ChatItemType = ChatMessageType | ToolMessageType | ThinkingMessageType;
 
 type ChatContextType = {
 	chat: ChatItemType[];
@@ -30,7 +35,7 @@ type ChatContextType = {
 	messageNumber: number;
 	resumeBotMessageNumber: number;
 	copybox: CopyableTextType[];
-	addMessage: (message: ChatMessageType) => void;
+	addMessage: (message: ChatItemType) => void;
 	setSessionId: (sessionId: string) => void;
 	setMessageNumber: (messageNumber: number) => void;
 	setResumeBotMessageNumber: (messageNumber: number) => void;
@@ -39,6 +44,7 @@ type ChatContextType = {
 	addResumeBotToolMessage: (toolMessage: ToolMessageType) => void;
 	setResumePDFPath: (pdfPath: string) => void;
 	addCopyboxElement: (copyableTextValue: string) => void;
+	replaceLastThinkingMessage: (nextThinkingMessage: ChatItemType) => void;
 }
 
 export const ChatContext = createContext<ChatContextType | null>(null)
@@ -53,7 +59,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 	const [messageNumber, setChatMessageNumber] = useState(0);
 	const [copybox, setCopybox] = useState<CopyableTextType[]>([]);
 
-	function addMessage(message: ChatMessageType) {
+	function addMessage(message: ChatItemType) {
 		setChat((current) => ([...current, message]));
 	}
 
@@ -83,6 +89,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 
 	function setResumeBotView(value: boolean) {
 		setResumeBotChatView(value)
+	}
+
+	function replaceLastThinkingMessage(nextThinkingMessage: ChatItemType) {
+		setChat(current => [...current.filter(item => !("message_type" in item)), nextThinkingMessage])
 	}
 
 	function addCopyboxElement(copyableTextValue: string) {
@@ -118,7 +128,8 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 			setResumeBotView,
 			addResumeBotToolMessage,
 			setResumePDFPath,
-			addCopyboxElement
+			addCopyboxElement,
+			replaceLastThinkingMessage
 		}}>
 			{children}
 		</ChatContext.Provider>

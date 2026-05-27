@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { ChatMessageType, ToolMessageType } from '../../context/ChatContext.tsx'
+import type { ChatMessageType, ThinkingMessageType, ToolMessageType } from '../../context/ChatContext.tsx'
 import { ChevronUp, ChevronDown, Wrench } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -17,7 +17,7 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 		return (
 			<div className="flex flex-col">
 				<div
-					className="text-sm shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] border-2 border-border flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-b-none border-b-1 text-text-muted hover:border-primary"
+					className="text-sm shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] border-2 border-border flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl rounded-b-none border-b-1 text-text-muted hover:border-primary hover:cursor-pointer"
 					onClick={toggleExpanded}
 				>
 					<p className="flex gap-2 text-text">
@@ -25,7 +25,7 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 						<span className="text-text">Tools Used:</span><span className="text-primary font-bold">{toolMessages.length}</span>
 					</p>
 					<button
-						className="text-text-muted hover:text-text font-bold"
+						className="text-text-muted hover:text-text font-bold hover:cursor-pointer"
 						onClick={toggleExpanded}
 					>
 						<ChevronUp size={20}/>
@@ -43,7 +43,7 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 	} else {
 		return (
 			<div
-				className="text-sm shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] border-2 border-border flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl text-text-muted hover:-motion-translate-y-loop-[10%] hover:motion-duration-700 hover:border-primary"
+				className="text-sm shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] border-2 border-border flex gap-4 justify-between items-center px-4 py-2 bg-bg-dark rounded-xl text-text-muted hover:-motion-translate-y-loop-[10%] hover:motion-duration-700 hover:border-primary hover:cursor-pointer"
 				onClick={toggleExpanded}
 			>
 				<p className="flex gap-2 text-text">
@@ -51,7 +51,7 @@ export function ToolSet({ toolMessages }: { toolMessages: ToolMessageType[]}) {
 					<span>Tools Used:</span><span className="text-primary font-bold">{toolMessages.length}</span>
 				</p>
 				<button
-					className="text-text-muted hover:text-text font-bold"
+					className="text-text-muted hover:text-text font-bold hover:cursor-pointer"
 				>
 					<ChevronDown size={20}/>
 				</button>
@@ -107,7 +107,7 @@ export function ToolMessage({ message, agent }: { message: ToolMessageType, agen
 			<div className="text-xs text-text-muted flex justify-between items-center bg-bg-dark rounded-xl px-2 py-1">
 				<div className="text-text">{toolName}</div>
 				<button
-					className="text-text-muted hover:text-text"
+					className="text-text-muted hover:text-text hover:cursor-pointer"
 					onClick={() => toggleExpanded()}
 				>{upOrDown()}</button>
 			</div>
@@ -140,6 +140,27 @@ export function ChatMessage({ message }: { message: ChatMessageType }) {
 					cleanedMessage
 				)
 				}
+			</div>
+		</div>
+	)
+}
+
+export function ThinkingMessage({thinkingMessage}: {thinkingMessage: ThinkingMessageType}) {
+	const { _message_type, message } = {
+		_message_type: thinkingMessage.message_type,
+		message: thinkingMessage.message
+	}
+	console.log(`rendering message with message_type: ${_message_type} and content: ${message.slice(0, 25)}...`)
+
+	const dottedMessage: string = "..." + message + "..."
+
+	return (
+		<div
+			className="flex flex-col gap-4 rounded-xl border-2 line-height-1 px-4 py-2 break-words text-left rounded-bl-none bg-none text-text-muted border-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ol]:list-decimal [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mb-1"
+		>
+			<h2>Thinking:</h2>
+			<div className="px-6">
+				{dottedMessage}
 			</div>
 		</div>
 	)
