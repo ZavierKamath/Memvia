@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { useChat } from '../../hooks/useChat.tsx';
 import type { ChatItemType } from '../../context/ChatContext.tsx'
-import { ChatMessage } from './MessageCards.tsx'
+import { ChatMessage, ThinkingMessage } from './MessageCards.tsx'
 
 export function Screen() {
 	const chatContext = useChat();
@@ -18,6 +18,10 @@ export function Screen() {
 	function conditionalMessageRender(message: ChatItemType) {
 		if ("toolName" in message) {
 			return <></>
+		}
+
+		if ("message_type" in message) {
+			return <ThinkingMessage key={JSON.stringify(message)} thinkingMessage={message}/>
 		}
 
 		return <ChatMessage key={message.number} message={message} />

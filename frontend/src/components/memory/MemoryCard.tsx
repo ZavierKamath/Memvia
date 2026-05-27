@@ -50,13 +50,13 @@ export function MemoryCard(
 						<h4 className="text-text text-sm">{memory.kind}</h4>
 						<div className="flex gap-4">
 							<button
-								className="text-warning font-semibold hover:text-text hover:-motion-translate-y-loop-[10%] hover:motion-duration-700"
+								className="text-warning font-semibold hover:text-text hover:-motion-translate-y-loop-[10%] hover:motion-duration-700 hover:cursor-pointer"
 								onClick={() => toggleEditing()}
 							>
 								<Pencil size={16}/>
 							</button>
 							<button
-								className="text-danger font-semibold hover:text-text hover:-motion-translate-y-loop-[10%] hover:motion-duration-700"
+								className="text-danger font-semibold hover:text-text hover:-motion-translate-y-loop-[10%] hover:motion-duration-700 hover:cursor-pointer"
 								onClick={() => deleteMemoryFunction(memory.mem_id)}
 							>
 								<Trash2 size={16}/>

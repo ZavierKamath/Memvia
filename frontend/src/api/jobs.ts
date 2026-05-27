@@ -1,15 +1,15 @@
-import type { ChatMessageType, ToolMessageType } from "../context/ChatContext.tsx"
+import type { ChatMessageType, ChatItemType, ToolMessageType, ThinkingMessageType } from "../context/ChatContext.tsx"
 
 export function createEventListenersForJob(
 	jobId: string,
 	messageNumber: number,
 	setSessionId: (sessionId: string) => void,
-	addMessage: (message: ChatMessageType) => void,
 	addToolMessage: (toolMessage: ToolMessageType) => void,
 	setResumeBotView: (value: boolean) => void,
 	addResumeBotToolMessage: (toolMessage: ToolMessageType) => void,
 	setResumePDFPath: (pdfPath: string) => void,
-	addCopyboxElement: (copyableText: string) => void
+	addCopyboxElement: (copyableText: string) => void,
+	replaceLastThinkingMessage: (nextThinkingMessage: ChatItemType) => void
 ) {
 	if (jobId === 'START') {
 		return 
@@ -18,28 +18,6 @@ export function createEventListenersForJob(
 
 	const es = new EventSource(`http://localhost:8000/jobs/${jobId}/stream`)
 	console.log('event source created')
-
-	es.addEventListener("status", (event) => {
-		const data = JSON.parse(event.data)
-		console.log(`status data: ${JSON.stringify(data)}`)
-		// addMessage({
-		// 	sender: "AI",
-		// 	message: JSON.stringify(data),
-		// 	number: messageNumber,
-		// 	sentTimestamp: "testtime"
-		// })
-	})
-
-	es.addEventListener("progress", (event) => {
-		const data = JSON.parse(event.data)
-		console.log(`progress data: ${JSON.stringify(data)}`)
-		// addMessage({
-		// 	sender: "AI",
-		// 	message: JSON.stringify(data),
-		// 	number: messageNumber,
-		// 	sentTimestamp: "testtime"
-		// })
-	})
 
 	es.addEventListener("tool_result", (event) => {
 		const data = JSON.parse(event.data)
@@ -82,15 +60,23 @@ export function createEventListenersForJob(
 		setResumePDFPath(data.outputs.output_path)
 	})
 
+	let thinkingBuffer: string = ""
+
 	es.addEventListener("agent", (event) => {
 		const data = JSON.parse(event.data)
 		switch (data.kind) {
-			case "text_delta":
-				console.log("assistant text chunk:", data.payload.delta)
-				break
-			case "tool_call":
-				console.log("tool call:", data.payload.tool_name, data.payload.args)
-				break
+			case "thinking_delta":
+				console.log("assistant thinking delta chunk:", data.payload.delta)
+				const delta: string = data.payload.delta
+				thinkingBuffer += delta
+				if (thinkingBuffer.length > 175) {
+					const newThinkingMessage: ThinkingMessageType = {
+						message_type: "thinking",
+						message: thinkingBuffer
+					}
+					replaceLastThinkingMessage(newThinkingMessage)
+					thinkingBuffer = ""
+				}
 		}
 	})
 
@@ -99,7 +85,8 @@ export function createEventListenersForJob(
 		console.log(`done data: ${JSON.stringify(data)}`)
 
 		const now = new Date()
-		addMessage({
+
+		const newMessage: ChatMessageType = {
 			sender: "AI",
 			message: data,
 			number: messageNumber,
@@ -108,7 +95,9 @@ export function createEventListenersForJob(
 				hour: "numeric",
 				minute: "2-digit"
 			}).format(now)
-		})
+		}
+		replaceLastThinkingMessage(newMessage)
+
 		es.close()
 	})
 

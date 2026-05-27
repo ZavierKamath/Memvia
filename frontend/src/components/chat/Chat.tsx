@@ -12,12 +12,12 @@ export function Chat() {
 			chatContext.sessionId,
 			chatContext.messageNumber,
 			chatContext.setSessionId,
-			chatContext.addMessage,
 			chatContext.addToolMessage,
 			chatContext.setResumeBotView,
 			chatContext.addResumeBotToolMessage,
 			chatContext.setResumePDFPath,
-			chatContext.addCopyboxElement
+			chatContext.addCopyboxElement,
+			chatContext.replaceLastThinkingMessage
 		)
 	}, [chatContext.sessionId, chatContext.messageNumber]);
 

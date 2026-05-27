@@ -78,14 +78,14 @@ export function AddMemoryForm(
 			<div className="flex justify-between items-center">
 				<h2 className="text-text px-1 py-[0.5] border-b-2 border-secondary text-lg font-semibold mr-auto ml-2">Add Memory</h2>
 				<button
-					className="px-4 py-2 text-text-muted border-2 border-border bg-bg-dark hover:text-text hover:border-secondary rounded-xl shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] hover:-motion-translate-y-loop-[10%] hover:motion-duration-700"
+					className="px-4 py-2 text-text-muted border-2 border-border bg-bg-dark hover:text-text hover:border-secondary rounded-xl shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] hover:-motion-translate-y-loop-[10%] hover:motion-duration-700 hover:cursor-pointer"
 					onClick={toggleMode}
 				>
 					{mode === "view" ? "Add Memory" : "View Memories"}
 				</button>
 			</div>
 			<select value={kind} onChange={(e) => setKind(e.target.value as MemoryKind)} name="kind"
-				className="text-text text-sm bg-bg-light px-2 py-2 rounded-xl border-2 border-border-muted focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary "
+				className="text-text text-sm bg-bg-light px-2 py-2 rounded-xl border-2 border-border-muted focus:outline-none focus:border-primary focus:border-2 focus:ring-primary/10 hover:border-primary hover:cursor-pointer"
 			>
 				<option value="experience">Experience</option>
 				<option value="skills">Skills</option>
@@ -115,7 +115,7 @@ export function AddMemoryForm(
 			/>
 			<button
 				type="submit"
-				className="text-text-muted border-2 border-border-muted rounded-xl bg-bg-light py-2 hover:text-text hover:border-primary"
+				className="text-text-muted border-2 border-border-muted rounded-xl bg-bg-light py-2 hover:text-text hover:border-primary hover:-motion-translate-y-loop-[10%] hover:motion-duration-700 hover:cursor-pointer"
 			>Submit</button>
 		</form>
 	)
