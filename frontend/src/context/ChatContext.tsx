@@ -45,6 +45,8 @@ type ChatContextType = {
 	setResumePDFPath: (pdfPath: string) => void;
 	addCopyboxElement: (copyableTextValue: string) => void;
 	replaceLastThinkingMessage: (nextThinkingMessage: ChatItemType) => void;
+	model: string;
+	setModel: (modelString: string) => void;
 }
 
 export const ChatContext = createContext<ChatContextType | null>(null)
@@ -58,6 +60,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 	const [sessionId, setChatSessionId] = useState("START");
 	const [messageNumber, setChatMessageNumber] = useState(0);
 	const [copybox, setCopybox] = useState<CopyableTextType[]>([]);
+	const [model, setModel] = useState<string>("deepseek/deepseek-v4-pro")
 
 	function addMessage(message: ChatItemType) {
 		setChat((current) => ([...current, message]));
@@ -129,7 +132,9 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 			addResumeBotToolMessage,
 			setResumePDFPath,
 			addCopyboxElement,
-			replaceLastThinkingMessage
+			replaceLastThinkingMessage,
+			model,
+			setModel
 		}}>
 			{children}
 		</ChatContext.Provider>

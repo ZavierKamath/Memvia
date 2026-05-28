@@ -1,8 +1,8 @@
 from src.agents.resumebot import ResumeBot
 from src.models import ToolResult
 
-async def spawn_resumebot_prewrap(job_service, mem_service, instructions: str):
-    resumebot = ResumeBot(job_service, mem_service)
+async def spawn_resumebot_prewrap(job_service, mem_service, instructions: str, model: str):
+    resumebot = ResumeBot(job_service, mem_service, model)
 
     await job_service.publish(job_service.job_id, "start_resumebot", {"instructions": instructions})
 

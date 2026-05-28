@@ -10,9 +10,8 @@ function App() {
 			<aside className="row-start-2 col-start-1 overflow-y-scroll min-h-0 border-l-2 border-border border-b-2">
 				<Sidebar />
 			</aside>
-			<main className="row-start-2 col-start-2 overflow-hidden min-h-0 flex flex-col bg-bg-light border-x-2 border-r-2 border-b-2 border-border ">
+			<main className="row-start-2 col-start-2 overflow-hidden min-h-0 flex flex-col bg-bg-light border-x-2 border-r-2 border-b-2 border-border relative">
 				<Chat />
-				<Sendbar />
 			</main>
 		</div>
 	)
