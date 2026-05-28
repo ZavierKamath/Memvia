@@ -51,7 +51,7 @@ export function createEventListenersForJob(
 			inputs: data.inputs,
 			outputs: data.outputs
 		}
-		addResumeBotToolMessage(toolMessage)
+		addToolMessage(toolMessage)
 	})
 
 	es.addEventListener("end_resumebot", (event) => {
@@ -109,7 +109,13 @@ export function createEventListenersForJob(
 	return () => es.close()
 }
 
-export async function invokeJob(setSessionId: (sessionId: string) => void, setMessageNumber: (messageNumber: number) => void, query: string, sessionId: string, messageNumber: number ) {
+export async function invokeJob(
+	setSessionId: (sessionId: string) => void,
+	setMessageNumber: (messageNumber: number) => void,
+	query: string,
+	sessionId: string, messageNumber: number,
+	model: string
+) {
 	console.log('invoking job')
 
 	const res = await fetch("http://localhost:8000/jobs/invoke", {
@@ -120,7 +126,8 @@ export async function invokeJob(setSessionId: (sessionId: string) => void, setMe
 		body: JSON.stringify({
 			question: query,
 			sessionId: sessionId,
-			messageNumber: messageNumber
+			messageNumber: messageNumber,
+			model: model
 		})
 	})
 

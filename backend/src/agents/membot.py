@@ -8,11 +8,11 @@ from src.tools.web_search import web_search_prewrap
 from src.tools.publish_copybox import publish_copybox_prewrap
 
 class MemBot(PipedAgent):
-    def __init__(self, job_id, job_service, mem_service):
+    def __init__(self, job_id, job_service, mem_service, model):
 
         async def spawn_resumebot_tool(instructions: str):
             "Spawns ResumeBot with the instructions that are given. ResumeBot will work and return a result in natual language."
-            result = await spawn_resumebot_prewrap(job_service, mem_service, instructions)
+            result = await spawn_resumebot_prewrap(job_service, mem_service, instructions, model)
             return result.output
 
         spawn_resumebot = Tool(
@@ -79,5 +79,6 @@ class MemBot(PipedAgent):
                 spawn_resumebot,
                 publish_copybox,
             ],
+            model_id=model
         )
 

@@ -10,6 +10,7 @@ class StartJobRequest(BaseModel):
     question: str
     sessionId: str
     messageNumber: int
+    model: str
 
 
 class MemoryKind(str, Enum):

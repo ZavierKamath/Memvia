@@ -31,7 +31,7 @@ class PipedAgent():
     """
     Base class for any agent that includes logging to openpipe under the session and agent name
     """
-    def __init__(self, agent_name: str, description: str, system_prompt: str, session: str, deps_type = None, agent_deps = None, tools = [], model_id: str = "qwen/qwen3.6-max-preview"):
+    def __init__(self, agent_name: str, description: str, system_prompt: str, session: str, deps_type = None, agent_deps = None, tools = [], model_id: str = "deepseek/deepseek-v4-pro"):
 #"qwen/qwen3.6-flash"
 #"deepseek/deepseek-v4-flash"
 #"qwen/qwen3.6-max-preview"

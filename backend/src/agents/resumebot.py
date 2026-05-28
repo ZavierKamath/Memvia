@@ -9,7 +9,7 @@ from src.tools.kb_search import kb_search_prewrap
 from src.models import Dates, Contact
 
 class ResumeBot(PipedAgent):
-    def __init__(self, job_service, mem_service):
+    def __init__(self, job_service, mem_service, model):
         tex_service = TexService(job_service.job_id)
 
         async def resume_start_tool(name: str, contacts: List[Contact], summary: Optional[str] = None):
@@ -80,5 +80,6 @@ class ResumeBot(PipedAgent):
             system_prompt=RESUMEBOT_SYSTEM_PROMPT,
             session=job_service.job_id,
             tools=[start_resume, add_experience, add_education, add_skills, end_resume, kb_search],
+            model_id=model
         )
 

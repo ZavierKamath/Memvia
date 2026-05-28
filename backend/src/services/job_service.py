@@ -7,9 +7,10 @@ from src.services.mem_service import MemoryService
 
 class JobService():
     job_queues: dict[str, asyncio.Queue] = {}
-    def __init__(self, job_id, mem_service: MemoryService):
+    def __init__(self, job_id, mem_service: MemoryService, model: str):
         self.job_id = job_id
         self.mem_service = mem_service
+        self.model = model
 
     async def get_queue(self, job_id: str) -> asyncio.Queue:
         if job_id not in self.job_queues:
@@ -29,7 +30,7 @@ class JobService():
         async def publish_agent_event(event: dict):
             await self.publish(job_id, "agent", event)
 
-        membot = MemBot(job_id, self, self.mem_service) 
+        membot = MemBot(job_id, self, self.mem_service, self.model) 
         result = await membot.ask(question, publish=publish_agent_event)
 
         await self.publish(job_id, "done", result.output)

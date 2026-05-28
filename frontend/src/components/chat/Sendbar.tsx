@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { invokeJob } from '../../api/jobs.ts';
 import { useChat } from '../../hooks/useChat.tsx';
 import type { ChatMessageType } from '../../context/ChatContext.tsx';
@@ -13,6 +13,7 @@ function Chatbar(
 	}
 ) {
 	const ref = useRef<HTMLTextAreaElement>(null)
+	const chatContext = useChat()
 
 	function resize() {
 		const el = ref.current
@@ -35,16 +36,28 @@ function Chatbar(
 	}
 
 	return (
-		<textarea
-			ref={ref}
-			onInput={resize}
-			onKeyDown={handleKeyDown}
-			value={inputText}
-			onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputText(e.target.value)}
-			rows={1}
-			placeholder="Input your prompt for MemBot..."
-			className="text-text-muted bg-sendbar-bg rounded-xl border-2 border-primary px-4 py-2 pt-[0.4rem] w-150 line-height-1 min-h-10 max-h-30 hover:border-primary focus:outline-none focus:border-primary resize-none scrollbar-hidden shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] focus:text-text hover:shadow-[0_0_1.5rem_theme(var(--primary))] hover:-motion-translate-y-loop-[10%] hover:motion-duration-700 focus:animate-none"
-		/>
+			<div className="relative">
+				<textarea
+					ref={ref}
+					onInput={resize}
+					onKeyDown={handleKeyDown}
+					value={inputText}
+					onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputText(e.target.value)}
+					rows={1}
+					placeholder="Input your prompt for MemBot..."
+					className="text-text-muted bg-sendbar-bg rounded-xl border-2 border-primary pl-4 pr-48 py-2 pt-[0.4rem] w-150 line-height-1 min-h-10 max-h-30 hover:border-primary focus:outline-none focus:border-primary resize-none scrollbar-hidden shadow-[0_0.25rem_0.5rem_rgba(0,0,0,0.2)] focus:text-text hover:shadow-[0_0_1.5rem_theme(var(--primary))]"
+				/>
+				<select value={chatContext.model} onChange={(e) => chatContext.setModel(e.target.value)} name="model"
+					className="absolute right-3 top-[5px] text-text-muted text-xs bg-none px-2 py-2 hover:cursor-pointer hover:text-text"
+				>
+					<option value="deepseek/deepseek-v4-pro">DeepSeek V4 Pro</option>
+					<option value="deepseek/deepseek-v4-flash">DeepSeek V4 Flash</option>
+					<option value="qwen/qwen3.6-max-preview">Qwen 3.6 Max</option>
+					<option value="qwen/qwen3.6-flash">Qwen 3.6 Flash</option>
+					<option value="anthropic/claude-sonnet-4.6">Claude Sonnet 4.6</option>
+					<option value="anthropic/claude-haiku-4.5">Claude Haiku 4.5</option>
+				</select>
+			</div>
 	)
 }
 
@@ -82,13 +95,14 @@ export function Sendbar() {
 			chatContext.setMessageNumber,
 			query,
 			chatContext.sessionId,
-			nextMessageNumber
+			nextMessageNumber,
+			chatContext.model
 		)
 
 	}
 
 	return (
-		<div className="fixed bottom-10 right-50 flex gap-4 justify-center">
+		<div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 justify-center">
 			<Chatbar
 				inputText={inputText}
 				setInputText={setInputText}
